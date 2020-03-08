@@ -13,7 +13,7 @@
 
 * ### Model
 
-  - [ ] TopSearch: 검색어를 search 칸에 입력했을 때 나오는 태그 목록과 게시물 갯수를 반환
+  - [x] TopSearch: 검색어를 search 칸에 입력했을 때 나오는 태그 목록과 게시물 갯수를 반환
   - [ ] CoreSpriteHashtag: query(검색어)로 태그 검색 시 나오는 각각의 게시물 (https://instagram.com/explore/tags/{query} 의 결과) 의 URL, 커버 사진 URL, 태그 정보, 좋아요 갯수를 반환
 
 * ### View
@@ -24,8 +24,11 @@
   
   - [ ] 게시물 구조체에 대한 String, MarshalJSON 구현
 
+---
 
-- [ ] 최적화: 동시성 패턴
+- [ ] 최적화: 병렬 처리
+
+---
 
 - [ ] API 명세서 작성
 
