@@ -1,5 +1,7 @@
 package crawler
 
-func ExampleCrawl() {
-
+func ExampleTopSearch() {
+	TopSearch("쿠키")
+	// Output:
+	//
 }
