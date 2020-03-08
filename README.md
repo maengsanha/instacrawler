@@ -7,4 +7,10 @@
 
 ---
 
+## :white_check_mark: TODO
+
+- [ ] searchTag: 검색어를 search 칸에 넣었을 때 나오는 태그 목록과 게시물 갯수를 반환
+- [ ] coreSpriteHashtag: 검색어로 태그 검색 시 나오는 각각의 게시물 (https://instagram.com/explore/tags/검색어 의 결과) 의 URL, 커버 사진 URL, 태그 정보, 좋아요 갯수 등을 반환
+- [ ] 각 게시물 구조체에 대한 String, MarshalJSON 구현
+
 ### [LICENSE](https://github.com/joshua-dev/instagram-crawler/blob/master/LICENSE)

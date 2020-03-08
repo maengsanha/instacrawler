@@ -1,4 +1,4 @@
-package scraper
+package crawler
 
 import (
 	"fmt"
@@ -8,8 +8,19 @@ import (
 
 const baseURL = "https://instagram.com/explore/tags/"
 
-// Scrape scrapes results from searches on terms in Instagram.
-func Scrape(term string) {
+type tag string
+
+type tags []tag
+
+// Posting is a posting of Instagram search result.
+type Posting struct {
+	URL string `json:"url,string,omitempty"`
+	Img string `json:"image,string,omitempty"`
+	Tag tags   `json:"tags,string,omitempty"`
+}
+
+// Crawl crawls results from searches on terms in Instagram.
+func Crawl(term string) {
 	var targetURL string = baseURL + term
 
 	req, err := http.NewRequest("GET", targetURL, nil)
