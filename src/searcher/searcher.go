@@ -1,4 +1,4 @@
-package topsearch
+package searcher
 
 import (
 	"encoding/json"
@@ -6,6 +6,9 @@ import (
 	"net/http"
 	"net/url"
 )
+
+const requestBaseURL = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
+const reelOption = "include_reel=true"
 
 // CheckError checks if a given error occurs.
 func CheckError(err error) {
@@ -26,16 +29,13 @@ func CheckStatusCode(resp *http.Response) {
 // TopSearch returns the list of tags and the number of posts of typing query
 // in the search field.
 func TopSearch(query string) Hashtags {
-	const requestBaseURL = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
-	const reelOption = "include_reel=true"
-
 	var requestURL string = fmt.Sprintf("%s%s&%s", requestBaseURL, url.QueryEscape(query), reelOption)
 
 	resp, err := http.Get(requestURL)
 	CheckError(err)
 	CheckStatusCode(resp)
 
-	defer resp.Body.Close() // prevent memory lick
+	defer resp.Body.Close()
 
 	var result topSearchResult
 	err = json.NewDecoder(resp.Body).Decode(&result)

@@ -1,4 +1,4 @@
-package topsearch
+package searcher
 
 import "fmt"
 
