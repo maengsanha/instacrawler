@@ -1,33 +1,57 @@
 package crawler
 
+import (
+	"net/http"
+	"strconv"
+	"strings"
+
+	"github.com/PuerkitoBio/goquery"
+	"github.com/joshua-dev/instacrawler/src/checker"
+)
+
 const requestBaseURL = "https://instagram.com/explore/tags/"
 
-// Crawl returns the URL of each post, cover photo URL, tag information, and number of likes found in the tag search by query in the Posting slice.
+// Crawl returns a Posting slice containing the URL of each post, cover photo URL, tag information, and number of likes found in the tag search by query.
 func Crawl(query string) []Posting {
-
+	return nil
 }
 
 // CrawlNumCoreSpriteHashtag returns the number of posts in the tag search url.
 func CrawlNumCoreSpriteHashtag(query string) int {
-	const accessorClassName = ".g47SY"
+	var requestURL string = requestBaseURL + query
+
+	resp, err := http.Get(requestURL)
+	checker.CheckError(err)
+	checker.CheckStatusCode(resp)
+
+	defer resp.Body.Close()
+
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
+	checker.CheckError(err)
+
+	parsedData := strings.Split(doc.Text(), `"edge_hashtag_to_media":{"count":`)[1]
+	numCoreSpriteHashtag, err := strconv.Atoi(strings.Split(parsedData, ",")[0])
+	checker.CheckError(err)
+
+	return numCoreSpriteHashtag
 }
 
-// CoreSpriteHashtag accesses to the url, returns a Posting structure containing cover photo URL, tag information, and number of likes
+// CoreSpriteHashtag returns a Posting struct containing cover photo URL, tag information, and number of likes
 func CoreSpriteHashtag(url string) Posting {
-	const accessorClassName = ".v1Nh3"
+	return Posting{}
 }
 
 // CoreSpriteHashtagSrc returns cover photo URL.
 func CoreSpriteHashtagSrc(url string) string {
-	const accessorClassName = "._9AhH0"
+	return ""
 }
 
 // CoreSpriteHashtagTagsInfo returns hashtag informations.
 func CoreSpriteHashtagTagsInfo(url string) string {
-	const accessorClassName = ".xil3i"
+	return ""
 }
 
 // CoreSpriteHashtagLike returns number of likes.
 func CoreSpriteHashtagLike(url string) int {
-	const accessorClassName = ".sqdOP"
+	return 0
 }

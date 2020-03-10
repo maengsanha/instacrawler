@@ -5,26 +5,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+
+	"github.com/joshua-dev/instacrawler/src/checker"
 )
 
 const requestBaseURL = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
 const reelOption = "include_reel=true"
-
-// CheckError checks if a given error occurs.
-func CheckError(err error) {
-	if err != nil {
-		// log.Println(err)
-		fmt.Println(err)
-	}
-}
-
-// CheckStatusCode checks if a given http response is not OK.
-func CheckStatusCode(resp *http.Response) {
-	if resp.StatusCode != http.StatusOK {
-		// log.Printf("Request failed with StatusCode: %d\n", resp.StatusCode)
-		fmt.Printf("Request failed with StatusCode: %d\n", resp.StatusCode)
-	}
-}
 
 // TopSearch returns the list of tags and the number of posts of typing query
 // in the search field.
@@ -32,14 +18,14 @@ func TopSearch(query string) Hashtags {
 	var requestURL string = fmt.Sprintf("%s%s&%s", requestBaseURL, url.QueryEscape(query), reelOption)
 
 	resp, err := http.Get(requestURL)
-	CheckError(err)
-	CheckStatusCode(resp)
+	checker.CheckError(err)
+	checker.CheckStatusCode(resp)
 
 	defer resp.Body.Close()
 
 	var result topSearchResult
 	err = json.NewDecoder(resp.Body).Decode(&result)
-	CheckError(err)
+	checker.CheckError(err)
 
 	return result.Hashtags
 }

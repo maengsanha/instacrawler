@@ -2,7 +2,7 @@ package crawler
 
 import "fmt"
 
-// Posting is an Instagram post.
+// Posting is an Instagram post type.
 type Posting struct {
 	URL  string `json:"url,omitempty"`
 	SRC  string `json:"src,omitempty"`
