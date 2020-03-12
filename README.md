@@ -4,7 +4,7 @@
 
 # INSTAGRAM CRAWLER
 
-[![LICENSE](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/joshua-dev/instagram-crawler/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-Apache%202-blue)](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
 [![go version](https://img.shields.io/badge/go-1.14-00ADD8)](https://go.dev)
 
 
@@ -13,13 +13,28 @@
 
 * ### Model
 
-  - [x] TopSearch: 검색어를 search 칸에 입력했을 때 나오는 태그 목록과 게시물 갯수를 반환
-  - [ ] Crawl: query(검색어)로 태그 검색 시 나오는 각각의 게시물 (https://instagram.com/explore/tags/{query} 의 결과) 의 URL, 커버 사진 URL, 태그 정보, 좋아요 갯수를 게시물 구조체 자료구조에 담아 반환
-    - [x] CrawlNumCoreSpriteHashtag: 태그 검색 url의 게시물 갯수를 반환
-      - [ ] CoreSpriteHashtag: 각 게시물 url마다 접근, 커버 사진 URL, 태그 정보, 좋아요 갯수를 구조체에 담아 반환
-        - [ ] CoreSpriteHashtagSrc: 커버 사진 URL을 반환
-        - [ ] CoreSpriteHashtagTagsInfo: 태그 정보를 반환
-        - [ ] CoreSpriteHashtagLike: 좋아요 갯수를 반환
+  [크롤링 솔루션](https://github.com/joshua-dev/instacrawler/blob/master/src/crawler/README.md)
+
+  * Searcher
+  
+    - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수를 크롤링
+      ```go
+      func (s *Searcher) TopSearch(query string) error
+      ```
+
+  * Crawler
+    
+    - [ ] parseInstaPageSource: 인스타그램 페이지 소스 파싱 수행
+      ```go
+      func (c *Crawler) parseInstaPageSource(url string) error
+      ```
+
+    - [ ] Next: 다음 pagination을 반환
+      ```go
+      func (c *Crawler) Next(parsedInstaPageSource string) error
+      ```
+    
+    - [ ] 
 
 * ### View
   
@@ -36,4 +51,4 @@
 
 ---
 
-### [LICENSE](https://github.com/joshua-dev/instagram-crawler/blob/master/LICENSE)
+### [LICENSE](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)

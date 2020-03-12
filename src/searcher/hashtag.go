@@ -2,12 +2,12 @@ package searcher
 
 import "fmt"
 
-type topSearchResult struct {
-	Hashtags Hashtags `json:"hashtags,omitempty"`
-}
+// type topSearchResult struct {
+// 	Hashtags hashtags `json:"hashtags,omitempty"`
+// }
 
-// Hashtags is a content slice type.
-type Hashtags []content
+// hashtags is a content slice type.
+type hashtags []content
 
 type content struct {
 	Hashtag hashtag `json:"hashtag,omitempty"`
@@ -25,7 +25,7 @@ func (h hashtag) String() string {
 }
 
 // String implements fmt.Stringer interface.
-func (h Hashtags) String() string {
+func (h hashtags) String() string {
 	var str string
 	for _, c := range h {
 		str += fmt.Sprintf("%s\n", c.Hashtag.String())
