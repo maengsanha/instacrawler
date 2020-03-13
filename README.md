@@ -9,11 +9,13 @@
 
 
 
+크롤링 솔루션에 대한 문서는 [여기](https://github.com/joshua-dev/instacrawler/blob/master/src/crawler/README.md)에 있습니다.
+
+
+
 ## :white_check_mark: TODO
 
 * ### Model
-
-  [크롤링 솔루션](https://github.com/joshua-dev/instacrawler/blob/master/src/crawler/README.md)
 
   * Searcher
   
@@ -22,19 +24,24 @@
       func (s *Searcher) TopSearch(query string) error
       ```
 
-  * Crawler
+  * Parser
     
     - [ ] parseInstaPageSource: 인스타그램 페이지 소스 파싱 수행
       ```go
-      func (c *Crawler) parseInstaPageSource(url string) error
+      func (p *Parser) parseInstaPageSource(url string) error
+      ```
+
+  * Crawler
+
+    - [ ] Crawl: 해시 태그 검색 결과 나타나는 게시물들에 대한 크롤링 수행
+      ```go
+      func (c *Crawler) Crawl(query string) []Posting
       ```
 
     - [ ] Next: 다음 pagination을 반환
       ```go
-      func (c *Crawler) Next(parsedInstaPageSource string) error
+      func (c *Crawler) Next(parsedInstaPageSource string) (string, error)
       ```
-    
-    - [ ] 
 
 * ### View
   
