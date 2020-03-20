@@ -38,7 +38,7 @@
       func (c *Crawler) Init(query string) error
       ```
 
-    - [ ] Next: Init을 통해 얻은 GraphQL end point에서 json 구조체 파싱
+    - [ ] Next: end_cursor (GraphQL end point) 값을 이용해 다음 pagination에서 json 구조체 파싱
       ```go
       func (c *Crawler) Next() error
       ```
