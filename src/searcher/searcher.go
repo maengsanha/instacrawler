@@ -19,8 +19,8 @@ type Searcher struct {
 	Hashtags hashtags `json:"hashtags,omitempty"`
 }
 
-// NewSearcher is constructor of Searcher.
-func NewSearcher() *Searcher {
+// New returns a new Searcher.
+func New() *Searcher {
 	return &Searcher{}
 }
 

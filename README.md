@@ -18,30 +18,32 @@
 * ### Model
 
   * Searcher
+
+    - [x] New: Searcher 생성자
+      ```go
+      func New() *Searcher
+      ```
   
-    - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수를 크롤링
+    - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수 크롤링
       ```go
       func (s *Searcher) TopSearch(query string) error
       ```
 
-  * Parser
-    
-    - [ ] parseInstaPageSource: 인스타그램 페이지 소스 파싱 수행
-      ```go
-      func (p *Parser) parseInstaPageSource(url string) error
-      ```
-
   * Crawler
 
-    - [ ] Crawl: 해시 태그 검색 결과 나타나는 게시물들에 대한 크롤링 수행
+    - [x] New: Crawler 생성자
+
+    - [ ] Init: 해시 태그 검색 시 나오는 첫 페이지 소스 파싱
       ```go
-      func (c *Crawler) Crawl(query string) []Posting
+      func (c *Crawler) Init(query string) error
       ```
 
-    - [ ] Next: 다음 pagination을 반환
+    - [ ] Next: Init을 통해 얻은 GraphQL end point에서 json 구조체 파싱
       ```go
-      func (c *Crawler) Next(parsedInstaPageSource string) (string, error)
+      func (c *Crawler) Next() error
       ```
+    
+    - [ ] Crawl: 한번의 Init과 반복적인 Next를 통해 query에 대한 모든 해시 태그 크롤링 완성
 
 * ### View
   
