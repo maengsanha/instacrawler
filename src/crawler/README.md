@@ -12,17 +12,17 @@
   
   entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges[idx].node
 
-  next GraphQL endpoint: ```end_cursor```
+  next GraphQL endpoint: **end_cursor**
 
-* ```3```: go to next pagination, and you will get ```json```. (Next)
+* ```3```: go to next pagination, and you will get freaky **json**. (Next)
 
   next pagination url:
   
   https://www.instagram.com/explore/tags/{query}/?__a=1&max_id={end_cursor}
 
-  then parse post data, next ```end_cursor```.
+  then parse post data, next **end_cursor**.
 
-* ```4```: go to ```3``` until ```has_next_page``` is true.
+* ```4```: go to ```3``` until **has_next_page** is true.
 
 ***
 
