@@ -14,8 +14,9 @@ func ExampleCrawler_init() {
 	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
 	fmt.Printf("has_next_page: %t\n", crawler.HasNextPage)
 	// Output:
-	// count: 122882781
-	// end_cursor: QVFDS092UGVTRGhGNTkzbjVzZFZsUk9rcm1CRU80bmlzVnF6YnR3WHRwYTFZeTFkR1dUcmFmaHBGOUJLOEVja28yYTBPdnVxeTZpcW1PRVNxYzFjS1ZJeA==
+	// Requesting to https://www.instagram.com/explore/tags/daily/...
+	// count: 122907884
+	// end_cursor: QVFCc1RXRXQyNDlaNVpjZGd5ejNUWEpyUWR4WW9LWlJocnNic2tKY1EyZnRKR3Q2bVRFRVFickZrTVluRXB0VVpDTUtkdDFwV3VXUGtPN0Rtb2RsckFOag==
 	// has_next_page: true
 }
 
