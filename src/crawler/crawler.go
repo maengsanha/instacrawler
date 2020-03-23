@@ -46,6 +46,8 @@ func (c *Crawler) String() string {
 func (c *Crawler) init(query string) error {
 	var requestURL string = fmt.Sprintf("%s%s/", requestBaseURL, url.QueryEscape(query))
 
+	fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
+
 	resp, err := http.Get(requestURL)
 	if err != nil {
 		return err
@@ -74,6 +76,8 @@ func (c *Crawler) next(query string) error {
 		return errors.New("Reach end of GraphQL endpoint")
 	}
 	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.EndCursor)
+
+	fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -106,20 +110,24 @@ func (c *Crawler) update(jsonText string) error {
 	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
 
 	for _, edge := range tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges {
-		// TODO: Concurrency
-		instaPost := InstaPost{
-			ID:   edge.Node.ID,
-			URL:  edge.Node.Shortcode,
-			SRC:  edge.Node.DisplayURL,
-			Like: edge.Node.EdgeLikedBy.Count,
-		}
-		if len(edge.Node.EdgeMediaToCaption.InEdges) > 0 {
-			instaPost.Text = edge.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
-		}
-		c.InstaPosts = append(c.InstaPosts, instaPost)
+		go c.collect(edge)
 	}
 
 	return nil
+}
+
+// collect appends an Instagram post to c with a given edge.
+func (c *Crawler) collect(e edge) {
+	instaPost := InstaPost{
+		ID:   e.Node.ID,
+		URL:  e.Node.Shortcode,
+		SRC:  e.Node.DisplayURL,
+		Like: e.Node.EdgeLikedBy.Count,
+	}
+	if len(e.Node.EdgeMediaToCaption.InEdges) > 0 {
+		instaPost.Text = e.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
+	}
+	c.InstaPosts = append(c.InstaPosts, instaPost)
 }
 
 // Crawl completes crawling from Instagram through init and repeated next.

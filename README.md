@@ -68,7 +68,12 @@
   - [x] 게시물 구조체에 대한 String, MarshalJSON 구현
 
 
-- [ ] 최적화: 병렬 처리
+* ### *Optimization*
+
+  - [x] Concurrency
+  - [ ] Pipelining
+
+
 
 - [ ] API 명세서 작성
 
