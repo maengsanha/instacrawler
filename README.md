@@ -51,10 +51,10 @@
       func (c *Crawler) next(query string) error
       ```
     
-    - [ ] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 완성
+    - [x] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 완성
       ```go
       // Crawl completes crawling from Instagram through init and repeated next.
-      func (c *Crawler) Crawl(query string) error
+      func (c *Crawler) Crawl(query string)
       ```
 
 * ### *View*

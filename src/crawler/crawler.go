@@ -112,6 +112,7 @@ func (c *Crawler) next(query string) error {
 		return err
 	}
 
+	c.Count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
 	c.EndCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
 	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
 
@@ -133,6 +134,12 @@ func (c *Crawler) next(query string) error {
 }
 
 // Crawl completes crawling from Instagram through init and repeated next.
-func (c *Crawler) Crawl(query string) error {
-	return nil
+func (c *Crawler) Crawl(query string) {
+	err := c.init(query)
+	checker.CheckError(err)
+
+	for c.HasNextPage {
+		err = c.next(query)
+		checker.CheckError(err)
+	}
 }
