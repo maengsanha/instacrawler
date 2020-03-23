@@ -39,22 +39,22 @@
       func New() *Crawler
       ```
 
-    - [x] Init: 해시 태그 검색 시 나오는 첫 페이지 소스 파싱
+    - [x] init: 해시 태그 검색 시 나오는 첫 페이지 소스 파싱
       ```go
-      // Init crawls page source from first Instagram hastag explore page with a given query.
-      func (c *Crawler) Init(query string) error
+      // init crawls page source from first Instagram hastag explore page with a given query.
+      func (c *Crawler) init(query string) error
       ```
 
-    - [ ] Next: end_cursor (GraphQL end point) 값을 이용해 다음 pagination에서 json 구조체 파싱
+    - [x] next: end_cursor (GraphQL end point) 값을 이용해 다음 pagination에서 json 구조체 파싱
       ```go
-      // Next parses json struct from next pagination.
-      func (c *Crawler) Next() error
+      // next parses json struct from next pagination.
+      func (c *Crawler) next(query string) error
       ```
     
-    - [ ] Crawl: 한번의 Init과 반복적인 Next를 통해 해시 태그 크롤링 완성
+    - [ ] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 완성
       ```go
-      // Crawl completes crawling from Instagram through one Init and repeated Next.
-      func (c *Crawler) Crawl() error
+      // Crawl completes crawling from Instagram through init and repeated next.
+      func (c *Crawler) Crawl(query string) error
       ```
 
 * ### *View*

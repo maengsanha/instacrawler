@@ -4,7 +4,7 @@
 
 * ```1```: go to Instagram hashtag explore page source with a query.
     
-  https://www.instagram.com/explore/tags/{query}
+  https://www.instagram.com/explore/tags/{query}/
 
 * ```2```: parse post data from page source. (Init)
   

@@ -4,9 +4,9 @@ import (
 	"fmt"
 )
 
-func ExampleCrawler_Init() {
+func ExampleCrawler_init() {
 	crawler := New()
-	if err := crawler.Init("daily"); err != nil {
+	if err := crawler.init("daily"); err != nil {
 		fmt.Println(err)
 		return
 	}
@@ -586,4 +586,20 @@ func ExampleCrawler_Init() {
 	// URL: https://www.instagram.com/p/-MQ7O0SUkT/
 	// SRC: https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-15/e35/12276974_965426393496808_759579666_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_cat=104&_nc_ohc=MXtP7s9wc68AX-qwriw&oh=1dbf0896a9eb5179a030d2a53c208950&oe=5E9F4C54
 	// Likes: 24
+}
+
+func ExampleCrawler_next() {
+	crawler := New()
+	if err := crawler.init("daily"); err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(crawler)
+	if err := crawler.next("daily"); err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(crawler)
+	// Output:
+	//
 }
