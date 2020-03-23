@@ -57,6 +57,8 @@
       func (c *Crawler) Crawl(query string)
       ```
 
+    - [ ] filter: 2, 3차 카테고리 검색어로 크롤링한 결과에 서로 AND 연산 수행
+
 * ### *View*
   
   - [ ] API 서버 구축

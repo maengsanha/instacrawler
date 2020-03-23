@@ -6,6 +6,8 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"os"
+	"runtime"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -59,28 +61,8 @@ func (c *Crawler) init(query string) error {
 
 	parsedInstaSource := strings.Split((strings.Split(doc.Text(), `"TagPage":[`)[1]), `]},"hostname":`)[0]
 
-	tagPage := TagPage{}
-
-	if err = json.Unmarshal([]byte(parsedInstaSource), &tagPage); err != nil {
+	if err = c.update(parsedInstaSource); err != nil {
 		return err
-	}
-
-	c.Count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
-	c.EndCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
-	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
-
-	for _, edge := range tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges {
-		// TODO: Concurrency
-		instaPost := InstaPost{
-			ID:   edge.Node.ID,
-			URL:  edge.Node.Shortcode,
-			SRC:  edge.Node.DisplayURL,
-			Like: edge.Node.EdgeLikedBy.Count,
-		}
-		if len(edge.Node.EdgeMediaToCaption.InEdges) > 0 {
-			instaPost.Text = edge.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
-		}
-		c.InstaPosts = append(c.InstaPosts, instaPost)
 	}
 
 	return nil
@@ -106,12 +88,19 @@ func (c *Crawler) next(query string) error {
 		return err
 	}
 
-	tagPage := TagPage{}
-
-	if err = json.Unmarshal([]byte(doc.Text()), &tagPage); err != nil {
+	if err = c.update(doc.Text()); err != nil {
 		return err
 	}
 
+	return nil
+}
+
+// update updates c with a given json.
+func (c *Crawler) update(jsonText string) error {
+	tagPage := TagPage{}
+	if err := json.Unmarshal([]byte(jsonText), &tagPage); err != nil {
+		return err
+	}
 	c.Count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
 	c.EndCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
 	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
@@ -135,6 +124,9 @@ func (c *Crawler) next(query string) error {
 
 // Crawl completes crawling from Instagram through init and repeated next.
 func (c *Crawler) Crawl(query string) {
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	fmt.Fprintf(os.Stdout, "CPU usage: %d\n", runtime.GOMAXPROCS(0))
+
 	err := c.init(query)
 	checker.CheckError(err)
 
