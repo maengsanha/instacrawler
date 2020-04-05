@@ -15,6 +15,24 @@
 
 ## :white_check_mark: TODO
 
+* ### *Core*
+
+  - [x] InstaPost: 인스타그램 게시물
+    ```go
+    // InstaPost is an Instagram post type.
+    type InstaPost struct
+    ```
+  <br />
+
+  - [x] Hashtags: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
+    ```go
+    // Hashtags is a list of related hashtags type
+    // provided when searching at the top of Instagram.
+    type Hashtags []content
+    ```
+    
+<br />
+
 * ### *Controllers*
   
   * Searcher
@@ -67,24 +85,6 @@
       ```go
       ```
 
-<br />
-
-* ### *Core*
-
-  - [x] InstaPost: 인스타그램 게시물 타입
-    ```go
-    // InstaPost is an Instagram post type.
-    type InstaPost struct
-    ```
-  <br />
-
-  - [x] Hashtags: 인스타그램 상단 검색 시 제공되는 유사한 해시 태그 목록
-    ```go
-    // Hashtags is a list of related hashtags type
-    // provided when searching at the top of Instagram.
-    type Hashtags []content
-    ```
-    
 <br />
 
 * ### *Routers*
