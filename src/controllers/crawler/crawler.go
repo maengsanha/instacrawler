@@ -6,13 +6,12 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"os"
 	"runtime"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-
-	"github.com/joshua-dev/instacrawler/src/checker"
+	"github.com/joshua-dev/instacrawler/src/controllers/checker"
+	"github.com/joshua-dev/instacrawler/src/core"
 )
 
 const requestBaseURL string = "https://www.instagram.com/explore/tags/"
@@ -22,7 +21,7 @@ type Crawler struct {
 	Count       int    `json:"count,omitempty"`
 	EndCursor   string `json:"end_cursor,omitempty"`
 	HasNextPage bool   `json:"has_next_page,omitempty"`
-	InstaPosts  []InstaPost
+	InstaPosts  []core.InstaPost
 }
 
 // New returns a new Crawler.
@@ -46,7 +45,7 @@ func (c *Crawler) String() string {
 func (c *Crawler) init(query string) error {
 	var requestURL string = fmt.Sprintf("%s%s/", requestBaseURL, url.QueryEscape(query))
 
-	fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
+	// fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -77,7 +76,7 @@ func (c *Crawler) next(query string) error {
 	}
 	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.EndCursor)
 
-	fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
+	// fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -101,7 +100,7 @@ func (c *Crawler) next(query string) error {
 
 // update updates c with a given json.
 func (c *Crawler) update(jsonText string) error {
-	tagPage := TagPage{}
+	tagPage := core.TagPage{}
 	if err := json.Unmarshal([]byte(jsonText), &tagPage); err != nil {
 		return err
 	}
@@ -117,8 +116,8 @@ func (c *Crawler) update(jsonText string) error {
 }
 
 // collect appends an Instagram post to c with a given edge.
-func (c *Crawler) collect(e edge) {
-	instaPost := InstaPost{
+func (c *Crawler) collect(e core.Edge) {
+	instaPost := core.InstaPost{
 		ID:   e.Node.ID,
 		URL:  e.Node.Shortcode,
 		SRC:  e.Node.DisplayURL,
@@ -132,13 +131,14 @@ func (c *Crawler) collect(e edge) {
 
 // Crawl completes crawling from Instagram through init and repeated next.
 func (c *Crawler) Crawl(query string) {
+	// use every CPU
 	runtime.GOMAXPROCS(runtime.NumCPU())
-	fmt.Fprintf(os.Stdout, "CPU usage: %d\n", runtime.GOMAXPROCS(0))
+	// fmt.Fprintf(os.Stdout, "CPU usage: %d\n", runtime.GOMAXPROCS(0))
 
 	err := c.init(query)
 	checker.CheckError(err)
 
-	for c.HasNextPage {
+	for c.HasNextPage && len(c.InstaPosts) < 1000 {
 		err = c.next(query)
 		checker.CheckError(err)
 	}

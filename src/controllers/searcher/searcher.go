@@ -6,7 +6,8 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/joshua-dev/instacrawler/src/checker"
+	"github.com/joshua-dev/instacrawler/src/controllers/checker"
+	"github.com/joshua-dev/instacrawler/src/core"
 )
 
 const (
@@ -16,7 +17,7 @@ const (
 
 // Searcher is a struct type that perfroms a search.
 type Searcher struct {
-	Hashtags hashtags `json:"hashtags,omitempty"`
+	Hashtags core.Hashtags `json:"hashtags,omitempty"`
 }
 
 // New returns a new Searcher.

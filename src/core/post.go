@@ -1,4 +1,4 @@
-package crawler
+package core
 
 import "fmt"
 
@@ -32,7 +32,7 @@ type hashtag struct {
 type edgeHashtagToMedia struct {
 	Count    int      `json:"count,omitempty"`
 	PageInfo pageInfo `json:"page_info,omitempty"`
-	Edges    []edge   `json:"edges,omitempty"`
+	Edges    []Edge   `json:"edges,omitempty"`
 }
 
 type pageInfo struct {
@@ -40,7 +40,8 @@ type pageInfo struct {
 	EndCursor   string `json:"end_cursor,omitempty"`
 }
 
-type edge struct {
+// Edge is a field type among Instagram post fields.
+type Edge struct {
 	Node node `json:"node,omitempty"`
 }
 
