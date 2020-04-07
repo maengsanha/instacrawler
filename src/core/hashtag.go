@@ -1,3 +1,4 @@
+// Package core defines models for Instagram crawling.
 package core
 
 import "fmt"

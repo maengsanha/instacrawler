@@ -1,3 +1,4 @@
+// Package checker implements checking logics for error and http response.
 package checker
 
 import (

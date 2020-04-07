@@ -1,3 +1,4 @@
+// Package searcher implements logics for crawling Instagram top search.
 package searcher
 
 import (

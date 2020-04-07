@@ -1,3 +1,4 @@
+// Package crawler implements Instagram crawling logic.
 package crawler
 
 import (
@@ -7,6 +8,7 @@ import (
 	"net/url"
 	"runtime"
 	"strings"
+	"sync"
 
 	jsoniter "github.com/json-iterator/go"
 
@@ -103,33 +105,36 @@ func (c *Crawler) next(query string) error {
 func (c *Crawler) update(jsonText string) error {
 	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
+	var syncer sync.WaitGroup
+
 	tagPage := core.TagPage{}
 	if err := json.Unmarshal([]byte(jsonText), &tagPage); err != nil {
 		return err
 	}
+
 	c.Count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
 	c.EndCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
 	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
 
 	for _, edge := range tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges {
-		go c.collect(edge)
+		syncer.Add(1)
+
+		go func(c *Crawler, edge core.Edge) {
+			defer syncer.Done()
+			instaPost := core.InstaPost{
+				ID:   edge.Node.ID,
+				URL:  edge.Node.Shortcode,
+				SRC:  edge.Node.DisplayURL,
+				Like: edge.Node.EdgeLikedBy.Count,
+			}
+			if len(edge.Node.EdgeMediaToCaption.InEdges) > 0 {
+				instaPost.Text = edge.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
+			}
+			c.InstaPosts = append(c.InstaPosts, instaPost)
+		}(c, edge)
 	}
 
 	return nil
-}
-
-// collect appends an Instagram post to c with a given edge.
-func (c *Crawler) collect(e core.Edge) {
-	instaPost := core.InstaPost{
-		ID:   e.Node.ID,
-		URL:  e.Node.Shortcode,
-		SRC:  e.Node.DisplayURL,
-		Like: e.Node.EdgeLikedBy.Count,
-	}
-	if len(e.Node.EdgeMediaToCaption.InEdges) > 0 {
-		instaPost.Text = e.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
-	}
-	c.InstaPosts = append(c.InstaPosts, instaPost)
 }
 
 // Crawl completes crawling from Instagram through init and repeated next.

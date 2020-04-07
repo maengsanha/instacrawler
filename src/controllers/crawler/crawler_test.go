@@ -1,3 +1,4 @@
+// Package crawler implements Instagram crawling logic.
 package crawler
 
 import "fmt"

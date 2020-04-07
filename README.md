@@ -1,19 +1,19 @@
 <img src="https://lh5.googleusercontent.com/proxy/r5D7LX7gbvXfuJU1SFAfCM1SerPt0KcBvR_R0qpXO_fsa39nwCKhyGE0UQbFP99XpSMRuPWrckLRnkoU747FW6EHY1_Gqf1xzhXYhJnIqIHizuhbBX3fh0sgdxbpIwJrDtC9g-uELzM-xYNfiw=s0-d">
 
-<br />
+<br>
 
 # **INSTAGRAM CRAWLER**
 
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
 [![go version](https://img.shields.io/badge/go-1.14.1-00ADD8)](https://go.dev)
 
-<br />
+<br>
 
 API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/spec.md)에 있습니다.
 
 크롤링 솔루션에 대한 문서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/solution.md)에 있습니다.
 
-<br />
+<br>
 
 ## :white_check_mark: TODO
 
@@ -24,7 +24,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     // InstaPost is an Instagram post type.
     type InstaPost struct
     ```
-  <br />
+  <br>
 
   - [x] Hashtags: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
     ```go
@@ -33,7 +33,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     type Hashtags []content
     ```
     
-<br />
+<br>
 
 * ### *Controllers*
   
@@ -44,14 +44,14 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
       // New returns a new Searcher.
       func New() *Searcher
       ```
-    <br />
+    <br>
 
     - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수 크롤링
       ```go
       // TopSearch performs a top search in Instagram with a given query.
       func (s *Searcher) TopSearch(query string) error
       ```
-  <br />
+  <br>
 
   * Crawler
 
@@ -60,41 +60,59 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
       // New returns a new Crawler.
       func New() *Crawler
       ```
-    <br />
+    <br>
 
     - [x] init: 해시 태그 검색 시 나오는 첫 페이지 소스 파싱
       ```go
       // init crawls page source from first Instagram hastag explore page with a given query.
       func (c *Crawler) init(query string) error
       ```
-    <br />
+    <br>
 
     - [x] next: end_cursor (GraphQL end point) 값을 이용해 다음 pagination에서 json 구조체 파싱
       ```go
       // next parses json struct from next pagination.
       func (c *Crawler) next(query string) error
       ```
-    <br />
+    <br>
 
     - [x] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 완성
       ```go
       // Crawl completes crawling from Instagram through init and repeated next.
       func (c *Crawler) Crawl(query string)
       ```
-    <br />
+    <br>
 
-    - [ ] Filter: 2, 3차 카테고리 검색어로 크롤링한 결과에 서로 AND 연산 수행
+    - [x] or: 같은 계층의 검색 결과들에 중복 없는 OR 연산 수행
       ```go
+      // or implements OR operation.
+      func or(layer []*Crawler) (set core.PostSet)
+      ```
+    
+    <br>
+
+    - [x] and: 2계층과 3계층 검색 결과에 AND 연산 수행
+      ```go
+      // and implements AND operation.
+      func and(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
+      ```
+    
+    <br>
+
+    - [x] Meta: 2계층과 3계층 검색 결과로 메타 검색 구현
+      ```go
+      // Meta implements meta-search with search terms of layer 2 and layer 3.
+      func Meta(secondLayer, thirdLayer []*Crawler) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
       ```
 
-<br />
+<br>
 
 * ### *Routers*
   
   - [ ] API 서버 구축
 
-<br />
-<br />
+<br>
+<br>
 
 
 * ### *Optimization*
@@ -102,11 +120,11 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
   - [x] Concurrency
   - [ ] Pipelining
 
-<br />
+<br>
 
-- [ ] API 명세서 작성
+- [x] API 명세서 작성
 
-<br />
-<br />
+<br>
+<br>
 
 ## [LICENSE](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)

@@ -1,3 +1,4 @@
+// Package core defines models for Instagram crawling.
 package core
 
 import "fmt"
@@ -10,6 +11,12 @@ type InstaPost struct {
 	SRC  string `json:"src,omitempty"`
 	Like int    `json:"like,omitempty"`
 }
+
+// InstaPosts is an Instagram post slice type.
+type InstaPosts []InstaPost
+
+// PostSet is an Instagram post set type.
+type PostSet map[InstaPost]struct{}
 
 // String implements fmt.Stringer interface.
 func (i InstaPost) String() string {
