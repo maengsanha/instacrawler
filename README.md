@@ -9,6 +9,8 @@
 
 <br />
 
+API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/spec.md)에 있습니다.
+
 크롤링 솔루션에 대한 문서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/solution.md)에 있습니다.
 
 <br />

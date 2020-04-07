@@ -11,8 +11,8 @@ import (
 )
 
 const (
-	requestBaseURL = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
-	reelOption     = "include_reel=true"
+	requestBaseURL string = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
+	reelOption     string = "include_reel=true"
 )
 
 // Searcher is a struct type that perfroms a search.

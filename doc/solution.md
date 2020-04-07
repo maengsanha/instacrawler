@@ -2,19 +2,19 @@
 
 ### All we have to do is repeating below loop.
 
-* ```1```: go to Instagram hashtag explore page source with a query.
+* `1`: go to Instagram hashtag explore page source with a query.
     
   https://www.instagram.com/explore/tags/{query}/
 
-* ```2```: parse post data from page source. (Init)
+* `2`: parse post data from page source. (Init)
   
-  post data of index ```idx```:
+  post data of index `idx`:
   
   entry_data.TagPage[0].graphql.hashtag.edge_hashtag_to_media.edges[idx].node
 
   next GraphQL endpoint: **end_cursor**
 
-* ```3```: go to next pagination, and you will get freaky **json**. (Next)
+* `3`: go to next pagination, and you will get freaky **json**. (Next)
 
   next pagination url:
   
@@ -22,7 +22,7 @@
 
   then parse post data, next **end_cursor**.
 
-* ```4```: go to ```3``` until **has_next_page** is true.
+* `4`: go to `3` until **has_next_page** is true.
 
 ***
 

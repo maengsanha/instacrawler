@@ -1,13 +1,14 @@
 package crawler
 
 import (
-	"encoding/json"
 	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
 	"runtime"
 	"strings"
+
+	jsoniter "github.com/json-iterator/go"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/joshua-dev/instacrawler/src/controllers/checker"
@@ -16,7 +17,7 @@ import (
 
 const requestBaseURL string = "https://www.instagram.com/explore/tags/"
 
-// Crawler is a struct type that perfroms crawling on Instagram.
+// Crawler is an Instagram crawler type.
 type Crawler struct {
 	Count       int    `json:"count,omitempty"`
 	EndCursor   string `json:"end_cursor,omitempty"`
@@ -100,6 +101,8 @@ func (c *Crawler) next(query string) error {
 
 // update updates c with a given json.
 func (c *Crawler) update(jsonText string) error {
+	var json = jsoniter.ConfigCompatibleWithStandardLibrary
+
 	tagPage := core.TagPage{}
 	if err := json.Unmarshal([]byte(jsonText), &tagPage); err != nil {
 		return err
