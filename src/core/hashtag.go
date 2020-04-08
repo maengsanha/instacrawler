@@ -5,9 +5,10 @@ import "fmt"
 
 // Hashtags is a list of related hashtags type
 // provided when searching at the top of Instagram.
-type Hashtags []content
+type Hashtags []Content
 
-type content struct {
+// Content is an Instagram content type.
+type Content struct {
 	Hashtag Hashtag `json:"hashtag,omitempty"`
 }
 
@@ -20,7 +21,7 @@ type Hashtag struct {
 
 // String implements fmt.Stringer interface.
 func (h Hashtag) String() string {
-	return fmt.Sprintf("#%s: %s(%d)", h.Name, h.SearchResultSubtitle, h.MediaCount)
+	return fmt.Sprintf("%s %s %d", h.Name, h.SearchResultSubtitle, h.MediaCount)
 }
 
 // String implements fmt.Stringer interface.

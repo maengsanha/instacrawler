@@ -5,7 +5,7 @@ import "fmt"
 
 // InstaPost is an Instagram post type.
 type InstaPost struct {
-	ID   string `json:"id,omitempty"`
+	ID   string `json:"-"`
 	Text string `json:"text"`
 	URL  string `json:"url,omitempty"`
 	SRC  string `json:"src,omitempty"`
@@ -20,7 +20,7 @@ type PostSet map[InstaPost]struct{}
 
 // String implements fmt.Stringer interface.
 func (i InstaPost) String() string {
-	return fmt.Sprintf("ID: %s\nText: %s\nURL: https://www.instagram.com/p/%s/\nSRC: %s\nLikes: %d\n", i.ID, i.Text, i.URL, i.SRC, i.Like)
+	return fmt.Sprintf("%s\n%s\n%d\n%s", i.URL, i.SRC, i.Like, i.Text)
 }
 
 // TagPage is a GraphQL endpoint json type.

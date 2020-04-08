@@ -47,36 +47,36 @@
 
   <br>
 
-  - Reponse 예시
+  - Reponse Body 예시
 
     <br>
 
-    - tag: 관련 해시태그
-    - approximate: 대략적인 게시물 갯수
-    - precise: 정확한 게시물 갯수
+    - name: 관련 해시태그
+    - search_result_subtitle: 대략적인 게시물 갯수
+    - media_count: 정확한 게시물 갯수
   
     ```json
     {
       "data": [
         {
-          "tag": "spring",
-          "approximate": "117M",
-          "precise": "117420799"
+          "name": "spring",
+          "search_result_subtitle": "117m",
+          "media_count": "117420799"
         },
         {
-          "tag": "springiscoming",
-          "approximate": "3.3M",
-          "precise": "3360549"
+          "name": "springiscoming",
+          "search_result_subtitle": "3.3m",
+          "media_count": "3360549"
         },
         {
-          "tag": "springflowers",
-          "approximate": "2.3M",
-          "precise": "2309203"
+          "name": "springflowers",
+          "search_result_subtitle": "2.3m",
+          "media_count": "2309203"
         },
         {
-          "tag": "springfashion",
-          "approximate": "3.4M",
-          "precise": "3420750"
+          "name": "springfashion",
+          "search_result_subtitle": "3.4m",
+          "media_count": "3420750"
         }
       ]
     }      
@@ -97,16 +97,16 @@
   - Request Body 예시
     <br>
 
-    L2: 2차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
+    second_layer: 2차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
     <br>
-    L3: 3차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
+    third_layer: 3차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
   
     ```json
     {
-      "L2": [
+      "second_layer": [
         "가수", "singer", "vocalist"
       ],
-      "L3": [
+      "third_layer": [
         "bts", "방탄소년단"
       ]
     }
@@ -115,12 +115,12 @@
 
   <br>
   
-  - Response 예시
+  - Response Body 예시
     <br>
 
-    L2: 2차 카테고리에만 속하는 검색 결과들의 iterable data structure
+    second_layer: 2차 카테고리에만 속하는 검색 결과들의 iterable data structure
     <br>
-    L3: 2차와 3차 카테고리 모두에 속하는 검색 결과들의 iterable data structure
+    third_layer: 2차와 3차 카테고리 모두에 속하는 검색 결과들의 iterable data structure
     
     <br>
     
@@ -134,33 +134,35 @@
 
     ```json
     {
-      "L2": [
-        {
-          "text": "#좋반 #좋테 #follow #dm #가수지망생 #가수 #소속사 #f4f",
-          "url": "Ej7e2uOP-223",
-          "src": "https://scontent-gmp1-1.cdinstagram/v/23kksok.d892",
-          "like":180
-        },
-        {
-          "text": "#trusty #diskey #트러스티 #디스키",
-          "url": "nERT39ui-1",
-          "src": "https://scontent-gmp1-1.cdinstagram/v/13141kdiw",
-          "like": 218
-        }
-      ],
-      "L3": [
-        {
-          "text": "#bts #army #btsarmy #태태 #태형 #김태형 #태형이 #fff #sure #f4f",
-          "url": "EO790-dsm732",
-          "src": "https://scontent-gmp1-1.cdinstagram/v/763je0jd",
-          "like": 456
-        },
-        {
-          "text": "거울 탐난다.",
-          "url": "56Fti980-112",
-          "src": "https://scontent-gmp1-1.cdinstagram/v/241rt50",
-          "like": 277
-        }
-      ]
+      "data": {
+        "second_layer": [
+          {
+            "text": "#좋반 #좋테 #follow #dm #가수지망생 #가수 #소속사 #f4f",
+            "url": "Ej7e2uOP-223",
+            "src": "https://scontent-gmp1-1.cdinstagram/v/23kksok.d892",
+            "like":180
+            },
+          {
+            "text": "#trusty #diskey #트러스티 #디스키",
+            "url": "nERT39ui-1",
+            "src": "https://scontent-gmp1-1.cdinstagram/v/13141kdiw",
+            "like": 218
+          }
+        ],
+        "third_layer": [
+          {
+            "text": "#bts #army #btsarmy #태태 #태형 #김태형 #태형이 #fff #sure #f4f",
+            "url": "EO790-dsm732",
+            "src": "https://scontent-gmp1-1.cdinstagram/v/763je0jd",
+            "like": 456
+          },
+          {
+            "text": "거울 탐난다.",
+            "url": "56Fti980-112",
+            "src": "https://scontent-gmp1-1.cdinstagram/v/241rt50",
+            "like": 277
+          }
+        ]
+      }
     }
     ```

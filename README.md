@@ -20,17 +20,20 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 * ### *Core*
 
   - [x] InstaPost: 인스타그램 게시물
+ 
     ```go
     // InstaPost is an Instagram post type.
     type InstaPost struct
     ```
+
   <br>
 
   - [x] Hashtags: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
+    
     ```go
     // Hashtags is a list of related hashtags type
     // provided when searching at the top of Instagram.
-    type Hashtags []content
+    type Hashtags []Content
     ```
     
 <br>
@@ -40,58 +43,65 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
   * Searcher
 
     - [x] New: Searcher 생성자
+    
       ```go
       // New returns a new Searcher.
-      func New() *Searcher
+      func New() Searcher
       ```
+    
     <br>
 
     - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수 크롤링
+      
       ```go
       // TopSearch performs a top search in Instagram with a given query.
-      func (s *Searcher) TopSearch(query string) error
+      func (s Searcher) TopSearch(query string) ([]core.Hashtag, error)
       ```
+  
   <br>
 
   * Crawler
 
     - [x] New: Crawler 생성자
+      
       ```go
       // New returns a new Crawler.
       func New() *Crawler
       ```
+    
     <br>
 
     - [x] init: 해시 태그 검색 시 나오는 첫 페이지 소스 파싱
+      
       ```go
       // init crawls page source from first Instagram hastag explore page with a given query.
       func (c *Crawler) init(query string) error
       ```
+    
     <br>
 
     - [x] next: end_cursor (GraphQL end point) 값을 이용해 다음 pagination에서 json 구조체 파싱
+      
       ```go
       // next parses json struct from next pagination.
       func (c *Crawler) next(query string) error
       ```
-    <br>
-
-    - [x] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 완성
-      ```go
-      // Crawl completes crawling from Instagram through init and repeated next.
-      func (c *Crawler) Crawl(query string)
-      ```
-    <br>
-
-    - [x] or: 같은 계층의 검색 결과들에 중복 없는 OR 연산 수행
-      ```go
-      // or implements OR operation.
-      func or(layer []*Crawler) (set core.PostSet)
-      ```
     
     <br>
 
+    - [x] Crawl: init과 반복적인 next를 통해 해시 태그 크롤링 구현
+      
+      ```go
+      // Crawl implements crawling on Instagram with init and repeated next.
+      func (c *Crawler) Crawl(query string)
+      ```
+  
+  <br>
+
+  * Meta
+
     - [x] and: 2계층과 3계층 검색 결과에 AND 연산 수행
+      
       ```go
       // and implements AND operation.
       func and(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
@@ -99,15 +109,36 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     
     <br>
 
-    - [x] Meta: 2계층과 3계층 검색 결과로 메타 검색 구현
+    - [x] or: 같은 계층의 검색 결과들에 중복 없는 OR 연산 수행
+      
       ```go
-      // Meta implements meta-search with search terms of layer 2 and layer 3.
-      func Meta(secondLayer, thirdLayer []*Crawler) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
+      // or implements OR operation.
+      func or(layer []*crawler.Crawler) (set core.PostSet)
+      ```
+    
+    <br>
+
+    - [x] categorize: 2계층과 3계층 검색 결과로 OR/AND 연산 수행
+      
+      ```go
+      // categorize implements categorization of meta-search.
+      func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, []core.InstaPost)
+      ```
+
+    <br>
+
+    - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
+
+      ```go
+      // Search implements meta-search with search terms of second layer and third layer.
+      func Search(secondLayer, thirdLayer []string) ([]core.InstaPost, []core.InstaPost)
       ```
 
 <br>
 
 * ### *Routers*
+
+  - [x] 요청/응답 구조체 정의
   
   - [ ] API 서버 구축
 

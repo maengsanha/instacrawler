@@ -1,16 +1,11 @@
-// Package main runs Instagram crawler api server.
-package main
+// Package meta implements meta-search.
+package meta
 
 import (
 	"fmt"
-	"runtime"
-
-	"github.com/joshua-dev/instacrawler/src/controllers/meta"
 )
 
-func main() {
-	runtime.GOMAXPROCS(runtime.NumCPU())
-
+func Example_meta_Search() {
 	secondLayer := []string{
 		"옷",
 		"clothes",
@@ -20,7 +15,7 @@ func main() {
 		"spring",
 	}
 
-	secondLayerResult, thirdLayerResult := meta.Search(secondLayer, thirdLayer)
+	secondLayerResult, thirdLayerResult := Search(secondLayer, thirdLayer)
 	fmt.Println("-*- second layer result -*-")
 	for _, post := range secondLayerResult {
 		fmt.Println(post)

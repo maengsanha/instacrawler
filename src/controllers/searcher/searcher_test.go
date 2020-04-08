@@ -6,31 +6,35 @@ import "fmt"
 
 func ExampleSearcher_TopSearch() {
 	s := New()
-	s.TopSearch("movie")
-	fmt.Println(s.Hashtags)
+	hashtags, err := s.TopSearch("movie")
+	if err != nil {
+		panic(err)
+	}
+
+	for _, hashtag := range hashtags {
+		fmt.Println(hashtag)
+	}
 	// Output:
-	// #movie: 41.2m posts(41232722)
-	// #movieclips: 179k posts(179343)
-	// #moviequote: 246k posts(246793)
-	// #moviereviews: 247k posts(247418)
-	// #movienews: 193k posts(193396)
-	// #moviestarplanet: 320k posts(320463)
-	// #moviemaker: 284k posts(284819)
-	// #movieposters: 169k posts(169022)
-	// #movies: 22.2m posts(22256907)
-	// #moviemaking: 627k posts(627936)
-	// #moviestars: 206k posts(206072)
-	// #movieart: 228k posts(228137)
-	// #moviemagic: 223k posts(223736)
-	// #moviefan: 191k posts(191057)
-	// #movieaddict: 336k posts(336163)
-	// #moviescene: 301k posts(301807)
-	// #movielovers: 296k posts(296353)
-	// #moviecollector: 347k posts(347445)
-	// #moviereview: 725k posts(725158)
-	// #movielover: 624k posts(624300)
-	// #moviepremiere: 214k posts(214260)
-	// #moviequotes: 973k posts(973445)
-	// #moviecollection: 441k posts(441206)
-	// #moviebuff: 637k posts(637040)
+	// movie 41.2m 41297855
+	// movieclips 180k 180372
+	// moviereviews 248k 248883
+	// movienews 193k 193830
+	// moviestarplanet 321k 321367
+	// moviemaker 285k 285365
+	// movieposters 169k 169671
+	// movies 22.3m 22304530
+	// moviemaking 629k 629117
+	// moviestars 206k 206510
+	// moviefan 190k 190315
+	// moviequote 247k 247754
+	// movieart 228k 228741
+	// moviemagic 224k 224067
+	// movieaddict 337k 337616
+	// moviescene 302k 302932
+	// moviegeek 200k 200139
+	// movielovers 297k 297598
+	// moviecollector 347k 347970
+	// moviebuff 638k 638187
+	// moviereview 728k 728530
+	// movielover 626k 626544
 }

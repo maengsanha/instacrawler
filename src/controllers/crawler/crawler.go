@@ -101,7 +101,7 @@ func (c *Crawler) next(query string) error {
 	return nil
 }
 
-// update updates c with a given json.
+// update updates crawler with a given json.
 func (c *Crawler) update(jsonText string) error {
 	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
@@ -137,9 +137,8 @@ func (c *Crawler) update(jsonText string) error {
 	return nil
 }
 
-// Crawl completes crawling from Instagram through init and repeated next.
+// Crawl implements crawling on Instagram with init and repeated next.
 func (c *Crawler) Crawl(query string) {
-	// use every CPU
 	runtime.GOMAXPROCS(runtime.NumCPU())
 	// fmt.Fprintf(os.Stdout, "CPU usage: %d\n", runtime.GOMAXPROCS(0))
 
