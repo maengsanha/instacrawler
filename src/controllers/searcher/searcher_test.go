@@ -10,31 +10,7 @@ func ExampleSearcher_TopSearch() {
 	if err != nil {
 		panic(err)
 	}
-
-	for _, hashtag := range hashtags {
-		fmt.Println(hashtag)
-	}
+	fmt.Println(string(hashtags))
 	// Output:
-	// movie 41.2m 41297855
-	// movieclips 180k 180372
-	// moviereviews 248k 248883
-	// movienews 193k 193830
-	// moviestarplanet 321k 321367
-	// moviemaker 285k 285365
-	// movieposters 169k 169671
-	// movies 22.3m 22304530
-	// moviemaking 629k 629117
-	// moviestars 206k 206510
-	// moviefan 190k 190315
-	// moviequote 247k 247754
-	// movieart 228k 228741
-	// moviemagic 224k 224067
-	// movieaddict 337k 337616
-	// moviescene 302k 302932
-	// moviegeek 200k 200139
-	// movielovers 297k 297598
-	// moviecollector 347k 347970
-	// moviebuff 638k 638187
-	// moviereview 728k 728530
-	// movielover 626k 626544
+	// [{"name":"movie","media_count":41311046,"search_result_subtitle":"41.3m"},{"name":"movieclips","media_count":180557,"search_result_subtitle":"180k"},{"name":"moviereviews","media_count":249222,"search_result_subtitle":"249k"},{"name":"movienews","media_count":193945,"search_result_subtitle":"193k"},{"name":"moviestarplanet","media_count":321489,"search_result_subtitle":"321k"},{"name":"moviemaker","media_count":285465,"search_result_subtitle":"285k"},{"name":"movieposters","media_count":169831,"search_result_subtitle":"169k"},{"name":"movies","media_count":22314183,"search_result_subtitle":"22.3m"},{"name":"moviemaking","media_count":629358,"search_result_subtitle":"629k"},{"name":"moviestars","media_count":206563,"search_result_subtitle":"206k"},{"name":"moviefan","media_count":189055,"search_result_subtitle":"189k"},{"name":"moviequote","media_count":247957,"search_result_subtitle":"247k"},{"name":"movieart","media_count":228793,"search_result_subtitle":"228k"},{"name":"moviemagic","media_count":224131,"search_result_subtitle":"224k"},{"name":"moviescene","media_count":303200,"search_result_subtitle":"303k"},{"name":"moviegeek","media_count":199760,"search_result_subtitle":"199k"},{"name":"movielovers","media_count":297843,"search_result_subtitle":"297k"}]
 }

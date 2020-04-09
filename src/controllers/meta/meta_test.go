@@ -1,9 +1,7 @@
 // Package meta implements meta-search.
 package meta
 
-import (
-	"fmt"
-)
+import "fmt"
 
 func Example_meta_Search() {
 	secondLayer := []string{
@@ -15,13 +13,9 @@ func Example_meta_Search() {
 		"spring",
 	}
 
-	secondLayerResult, thirdLayerResult := Search(secondLayer, thirdLayer)
-	fmt.Println("-*- second layer result -*-")
-	for _, post := range secondLayerResult {
-		fmt.Println(post)
+	output, err := Search(secondLayer, thirdLayer)
+	if err != nil {
+		fmt.Println(err)
 	}
-	fmt.Println("-*- third layer result -*-")
-	for _, post := range thirdLayerResult {
-		fmt.Println(post)
-	}
+	fmt.Println(string(output))
 }

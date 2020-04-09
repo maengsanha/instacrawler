@@ -27,6 +27,18 @@ type Crawler struct {
 	InstaPosts  []core.InstaPost
 }
 
+// Request is a crawling request body type.
+type Request struct {
+	SecondLayer []string `json:"second_layer,omitempty"`
+	ThirdLayer  []string `json:"third_layer,omitempty"`
+}
+
+// Response is a crawling response body type.
+type Response struct {
+	SecondLayer []core.InstaPost `json:"second_layer,omitempty"`
+	ThirdLayer  []core.InstaPost `json:"third_layer,omitempty"`
+}
+
 // New returns a new Crawler.
 func New() *Crawler {
 	return &Crawler{}

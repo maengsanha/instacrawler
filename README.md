@@ -54,8 +54,8 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     - [x] TopSearch: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수 크롤링
       
       ```go
-      // TopSearch performs a top search in Instagram with a given query.
-      func (s Searcher) TopSearch(query string) ([]core.Hashtag, error)
+      // TopSearch implements top search on Instagram with a given query.
+      func (s Searcher) TopSearch(query string) ([]byte, error)
       ```
   
   <br>
@@ -130,17 +130,16 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
 
       ```go
-      // Search implements meta-search with search terms of second layer and third layer.
-      func Search(secondLayer, thirdLayer []string) ([]core.InstaPost, []core.InstaPost)
+      // Search implements meta-search with the given search terms of second layer and third layer.
+      func Search(secondLayer, thirdLayer []string) ([]byte, error)
       ```
 
 <br>
 
 * ### *Routers*
-
-  - [x] 요청/응답 구조체 정의
   
-  - [ ] API 서버 구축
+  - [ ] /api/v1/topsearch
+  - [ ] /api/v1/crawl
 
 <br>
 <br>
