@@ -29,7 +29,7 @@
 
   | method |       path        |  Request   |       Response       |
   | :----: | :---------------: | :--------: | :------------------: |
-  | `GET`  | /api/v1/topsearch | (json) 검색어 | (json) 상단 해시태그 검색 결과 |
+  | `POST` | /api/v1/topsearch | (json) 검색어 | (json) 상단 해시태그 검색 결과 |
 
   <br>
 
@@ -90,7 +90,7 @@
 
   | method |     path      |          Request          |    Response     |
   | :----: | :-----------: | :-----------------------: | :-------------: |
-  | `GET`  | /api/v1/crawl | (json) 동의어를 포함한 메타 검색어 정보 | (json) 메타 검색 결과 |
+  | `POST` | /api/v1/crawl | (json) 동의어를 포함한 메타 검색어 정보 | (json) 메타 검색 결과 |
 
   <br>
 
