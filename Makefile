@@ -2,34 +2,28 @@
 
 GOCMD = go
 GOBUILD = $(GOCMD) build
+GORUN = $(GOCMD) run
 GOCLEAN = $(GOCMD) clean
 GOTEST = $(GOCMD) test
 GOGET = $(GOCMD) get
-BINARY_FILE = executeme
+BINARY_FILE = instacrawler
 BINARY_UNIX = $(BINARY_FILE)_unix
 
 all: run clean
 
+install:
+	$(GOGET)
+
 build:
-	$(GOBUILD) -o $(BINARY_FILE) -v
+	$(GOBUILD) -o $(BINARY_FILE) -v ./src/main.go
 
 test:
-	$(GOTEST) -v ./...
-
-clean:
-	$(GOCLEAN)
-	rm -f $(BINARY_FILE)
-	rm -f $(BINARY_UNIX)
+	$(GOTEST) -v ./src/...
 
 run:
-	$(GOBUILD) -o $(BINARY_FILE) -v ./...
-	./$(BINARY_FILE)
+	@$(GORUN) -v ./src/main.go
 
-
-# Cross compilation
-
-build-linux:
-	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_UNIX) -v
-
-docker-build:
-  docker run --rm -it -v "$(GOPATH)":/go -w /go/src/bitbucket.org/rsohlich/makepost golang:latest go build -o "$(BINARY_FILE)" -v
+clean:
+	@$(GOCLEAN)
+	@rm -f $(BINARY_FILE)
+	@rm -f $(BINARY_UNIX)

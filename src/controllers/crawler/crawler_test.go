@@ -50,7 +50,7 @@ func ExampleCrawler_Crawl() {
 	fmt.Printf("count: %d\n", crawler.Count)
 	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
 	fmt.Printf("has_next_page: %t\n", crawler.HasNextPage)
-	// // Output:
+	// Output:
 	// count: 924
 	// end_cursor:
 	// has_next_page: false

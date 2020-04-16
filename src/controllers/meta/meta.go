@@ -4,8 +4,6 @@ package meta
 import (
 	"sync"
 
-	jsoniter "github.com/json-iterator/go"
-
 	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
 	"github.com/joshua-dev/instacrawler/src/core"
 )
@@ -55,9 +53,7 @@ func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, [
 }
 
 // Search implements meta-search with search terms of second layer and third layer.
-func Search(secondLayer, thirdLayer []string) ([]byte, error) {
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-
+func Search(secondLayer, thirdLayer []string) (crawler.Response, error) {
 	var queries []string = append(secondLayer, thirdLayer...)
 	var workers []*crawler.Crawler
 	var syncer sync.WaitGroup
@@ -82,5 +78,5 @@ func Search(secondLayer, thirdLayer []string) ([]byte, error) {
 		ThirdLayer:  thirdLayerResult,
 	}
 
-	return json.Marshal(output)
+	return output, nil
 }

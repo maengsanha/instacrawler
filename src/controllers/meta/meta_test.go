@@ -5,17 +5,18 @@ import "fmt"
 
 func Example_meta_Search() {
 	secondLayer := []string{
-		"옷",
-		"clothes",
+		"golang",
 	}
 	thirdLayer := []string{
-		"봄",
-		"spring",
+		"gophercon",
 	}
 
 	output, err := Search(secondLayer, thirdLayer)
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(string(output))
+	fmt.Printf("Second Layer: %s\n", output.SecondLayer)
+	fmt.Printf("Third Layer: %s\n", output.ThirdLayer)
+	// Output:
+	//
 }

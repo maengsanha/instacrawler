@@ -1,0 +1,11 @@
+POST http://127.0.0.1:8080/api/v1/crawl
+Content-Type: application/json
+
+{
+  "second_layer": [
+    "dog", "cat"
+  ],
+  "third_layer": [
+    "clothe"
+  ]
+}

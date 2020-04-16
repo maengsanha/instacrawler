@@ -2,12 +2,11 @@
 package searcher
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
 	"strings"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"github.com/joshua-dev/instacrawler/src/controllers/checker"
 	"github.com/joshua-dev/instacrawler/src/core"
@@ -29,10 +28,8 @@ func New() Searcher {
 }
 
 // TopSearch implements top search on Instagram with a given query.
-func (s Searcher) TopSearch(query string) ([]byte, error) {
+func (s Searcher) TopSearch(query string) ([]core.Hashtag, error) {
 	var requestURL string = fmt.Sprintf("%s%s&%s", requestBaseURL, url.QueryEscape(query), reelOption)
-
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -57,5 +54,5 @@ func (s Searcher) TopSearch(query string) ([]byte, error) {
 		})
 	}
 
-	return json.Marshal(hashtags)
+	return hashtags, nil
 }

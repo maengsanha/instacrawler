@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
-	"runtime"
 	"strings"
 	"sync"
 
@@ -60,8 +59,6 @@ func (c *Crawler) String() string {
 func (c *Crawler) init(query string) error {
 	var requestURL string = fmt.Sprintf("%s%s/", requestBaseURL, url.QueryEscape(query))
 
-	// fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
-
 	resp, err := http.Get(requestURL)
 	if err != nil {
 		return err
@@ -90,8 +87,6 @@ func (c *Crawler) next(query string) error {
 		return errors.New("Reach end of GraphQL endpoint")
 	}
 	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.EndCursor)
-
-	// fmt.Fprintf(os.Stdout, "Requesting to %s...\n", requestURL)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -151,13 +146,10 @@ func (c *Crawler) update(jsonText string) error {
 
 // Crawl implements crawling on Instagram with init and repeated next.
 func (c *Crawler) Crawl(query string) {
-	runtime.GOMAXPROCS(runtime.NumCPU())
-	// fmt.Fprintf(os.Stdout, "CPU usage: %d\n", runtime.GOMAXPROCS(0))
-
 	err := c.init(query)
 	checker.CheckError(err)
 
-	for c.HasNextPage && len(c.InstaPosts) < 1000 {
+	for c.HasNextPage && len(c.InstaPosts) < 720 {
 		err = c.next(query)
 		checker.CheckError(err)
 	}
