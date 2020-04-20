@@ -9,7 +9,7 @@ GOGET = $(GOCMD) get
 BINARY_FILE = instacrawler
 BINARY_UNIX = $(BINARY_FILE)_unix
 
-all: run clean
+all: run
 
 install:
 	$(GOGET)

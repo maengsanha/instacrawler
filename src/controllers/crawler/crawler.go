@@ -4,25 +4,31 @@ package crawler
 import (
 	"errors"
 	"fmt"
+	"io"
 	"net/http"
 	"net/url"
-	"strings"
 	"sync"
+
+	"github.com/PuerkitoBio/goquery"
 
 	jsoniter "github.com/json-iterator/go"
 
-	"github.com/PuerkitoBio/goquery"
 	"github.com/joshua-dev/instacrawler/src/controllers/checker"
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
-const requestBaseURL string = "https://www.instagram.com/explore/tags/"
+const (
+	maxCrawlSize   int    = 360
+	requestBaseURL string = "https://www.instagram.com/explore/tags/"
+)
+
+var json jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
 
 // Crawler is an Instagram crawler type.
 type Crawler struct {
-	Count       int    `json:"count,omitempty"`
-	EndCursor   string `json:"end_cursor,omitempty"`
-	HasNextPage bool   `json:"has_next_page,omitempty"`
+	count       int
+	endCursor   string
+	hasNextPage bool
 	InstaPosts  []core.InstaPost
 }
 
@@ -45,19 +51,12 @@ func New() *Crawler {
 
 // String implements fmt.Stringer interface.
 func (c *Crawler) String() string {
-	var str string
-	str += fmt.Sprintf("count: %d\n", c.Count)
-	str += fmt.Sprintf("end_cursor: %s\n", c.EndCursor)
-	str += fmt.Sprintf("has_next_page: %t\n\n", c.HasNextPage)
-	for _, instaPost := range c.InstaPosts {
-		str += fmt.Sprintf("%s\n", instaPost.String())
-	}
-	return str
+	return fmt.Sprintf("count: %d\nend_cursor: %s\nhas_next_page: %t", c.count, c.endCursor, c.hasNextPage)
 }
 
 // init crawls page source from first Instagram hastag explore page with a given query.
 func (c *Crawler) init(query string) error {
-	var requestURL string = fmt.Sprintf("%s%s/", requestBaseURL, url.QueryEscape(query))
+	var requestURL string = fmt.Sprintf("%s%s/?__a=1", requestBaseURL, url.QueryEscape(query))
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -67,14 +66,7 @@ func (c *Crawler) init(query string) error {
 
 	defer resp.Body.Close()
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	parsedInstaSource := strings.Split((strings.Split(doc.Text(), `"TagPage":[`)[1]), `]},"hostname":`)[0]
-
-	if err = c.update(parsedInstaSource); err != nil {
+	if err = c.update(resp.Body); err != nil {
 		return err
 	}
 
@@ -83,10 +75,10 @@ func (c *Crawler) init(query string) error {
 
 // next parses json struct from next pagination.
 func (c *Crawler) next(query string) error {
-	if !c.HasNextPage {
+	if !c.hasNextPage {
 		return errors.New("Reach end of GraphQL endpoint")
 	}
-	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.EndCursor)
+	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.endCursor)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -96,12 +88,7 @@ func (c *Crawler) next(query string) error {
 
 	defer resp.Body.Close()
 
-	doc, err := goquery.NewDocumentFromReader(resp.Body)
-	if err != nil {
-		return err
-	}
-
-	if err = c.update(doc.Text()); err != nil {
+	if err = c.update(resp.Body); err != nil {
 		return err
 	}
 
@@ -109,19 +96,21 @@ func (c *Crawler) next(query string) error {
 }
 
 // update updates crawler with a given json.
-func (c *Crawler) update(jsonText string) error {
-	var json = jsoniter.ConfigCompatibleWithStandardLibrary
-
+func (c *Crawler) update(body io.ReadCloser) error {
 	var syncer sync.WaitGroup
-
-	tagPage := core.TagPage{}
-	if err := json.Unmarshal([]byte(jsonText), &tagPage); err != nil {
+	var tagPage core.TagPage
+	doc, err := goquery.NewDocumentFromReader(body)
+	if err != nil {
 		return err
 	}
 
-	c.Count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
-	c.EndCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
-	c.HasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
+	if err = json.Unmarshal([]byte(doc.Text()), &tagPage); err != nil {
+		return err
+	}
+
+	c.count = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Count
+	c.endCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
+	c.hasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
 
 	for _, edge := range tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges {
 		syncer.Add(1)
@@ -134,8 +123,8 @@ func (c *Crawler) update(jsonText string) error {
 				SRC:  edge.Node.DisplayURL,
 				Like: edge.Node.EdgeLikedBy.Count,
 			}
-			if len(edge.Node.EdgeMediaToCaption.InEdges) > 0 {
-				instaPost.Text = edge.Node.EdgeMediaToCaption.InEdges[0].InNode.Text
+			if len(edge.Node.EdgeMediaToCaption.Edges) > 0 {
+				instaPost.Text = edge.Node.EdgeMediaToCaption.Edges[0].Node.Text
 			}
 			c.InstaPosts = append(c.InstaPosts, instaPost)
 		}(c, edge)
@@ -149,7 +138,7 @@ func (c *Crawler) Crawl(query string) {
 	err := c.init(query)
 	checker.CheckError(err)
 
-	for c.HasNextPage && len(c.InstaPosts) < 720 {
+	for c.hasNextPage && (len(c.InstaPosts) < maxCrawlSize) {
 		err = c.next(query)
 		checker.CheckError(err)
 	}

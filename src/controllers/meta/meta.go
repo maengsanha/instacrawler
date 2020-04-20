@@ -8,8 +8,8 @@ import (
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
-// and implements AND operation.
-func and(secondLayer, thirdLayer core.PostSet) (secondLayerResult []core.InstaPost, thirdLayerResult []core.InstaPost) {
+// _AND implements AND operation.
+func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult []core.InstaPost, thirdLayerResult []core.InstaPost) {
 	var syncer sync.WaitGroup
 
 	for secondLayerPost := range secondLayer {
@@ -30,8 +30,8 @@ func and(secondLayer, thirdLayer core.PostSet) (secondLayerResult []core.InstaPo
 	return secondLayerResult, thirdLayerResult
 }
 
-// or implements OR operation.
-func or(layer []*crawler.Crawler) core.PostSet {
+// _OR implements OR operation.
+func _OR(layer []*crawler.Crawler) core.PostSet {
 	set := make(core.PostSet)
 	for _, c := range layer {
 		for _, post := range c.InstaPosts {
@@ -46,14 +46,14 @@ func or(layer []*crawler.Crawler) core.PostSet {
 
 // categorize implements categorization of meta-search.
 func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, []core.InstaPost) {
-	secondLayerPostSet := or(secondLayer)
-	thirdLayerPostSet := or(thirdLayer)
+	secondLayerPostSet := _OR(secondLayer)
+	thirdLayerPostSet := _OR(thirdLayer)
 
-	return and(secondLayerPostSet, thirdLayerPostSet)
+	return _AND(secondLayerPostSet, thirdLayerPostSet)
 }
 
 // Search implements meta-search with search terms of second layer and third layer.
-func Search(secondLayer, thirdLayer []string) (crawler.Response, error) {
+func Search(secondLayer, thirdLayer []string) crawler.Response {
 	var queries []string = append(secondLayer, thirdLayer...)
 	var workers []*crawler.Crawler
 	var syncer sync.WaitGroup
@@ -78,5 +78,5 @@ func Search(secondLayer, thirdLayer []string) (crawler.Response, error) {
 		ThirdLayer:  thirdLayerResult,
 	}
 
-	return output, nil
+	return output
 }

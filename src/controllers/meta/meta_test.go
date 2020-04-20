@@ -11,10 +11,7 @@ func Example_meta_Search() {
 		"gophercon",
 	}
 
-	output, err := Search(secondLayer, thirdLayer)
-	if err != nil {
-		fmt.Println(err)
-	}
+	output := Search(secondLayer, thirdLayer)
 	fmt.Printf("Second Layer: %s\n", output.SecondLayer)
 	fmt.Printf("Third Layer: %s\n", output.ThirdLayer)
 	// Output:

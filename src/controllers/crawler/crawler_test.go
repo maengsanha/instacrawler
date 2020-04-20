@@ -5,53 +5,43 @@ import "fmt"
 
 func ExampleCrawler_init() {
 	crawler := New()
-	if err := crawler.init("daily"); err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("count: %d\n", crawler.Count)
-	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
-	fmt.Printf("has_next_page: %t\n", crawler.HasNextPage)
+	crawler.init("kakao")
+	fmt.Println(crawler)
+	fmt.Println(len(crawler.InstaPosts))
 	// Output:
-	// count: 123857838
-	// end_cursor: QVFDQ1RSbGxtcWROczJlaUlBSVFfOWFIb25mS0Q1SnJIX2VyekpvRDcxR3ZhYlluVm5oYUVJMW9vUEZLZWFrbVdxVlZfRkpzTmRPdnpnLS1aUVlfMkdncA==
+	// count: 64956348
+	// end_cursor: QVFBRC1fby1jQUZIMHlfRm14VGZlUDhSaV9nQ2FoQjdrQWMtRjctVlN0UTJieWl6Vjc1Q2QyUmhzbW9wSmYtRzgwb2t4dXVPWGRncmx0bU1seVlyd0tWTQ==
 	// has_next_page: true
+	// 49
 }
 
 func ExampleCrawler_next() {
 	crawler := New()
-	if err := crawler.init("daily"); err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("count: %d\n", crawler.Count)
-	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
-	fmt.Printf("has_next_page: %t\n\n", crawler.HasNextPage)
-	if err := crawler.next("daily"); err != nil {
-		fmt.Println(err)
-		return
-	}
-	fmt.Printf("count: %d\n", crawler.Count)
-	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
-	fmt.Printf("has_next_page: %t\n", crawler.HasNextPage)
+	crawler.init("kakao")
+	fmt.Println(crawler)
+	fmt.Println(len(crawler.InstaPosts))
+	crawler.next("kakao")
+	fmt.Println(crawler)
+	fmt.Println(len(crawler.InstaPosts))
 	// Output:
-	// count: 123857867
-	// end_cursor: QVFDQTdBWUl4bWtBdTg1MlZXUF9tWlluMjUtUFRobDdNN0o0TWkyRzI2c05mVDQzWXBBR1BmU0xYcmJHQ0RSYVRDRl8tTzB6MXJLODRoLWlPby10ZWZSSA==
+	// count: 64956351
+	// end_cursor: QVFCdzN5N2lUbmYxVW9yTHY0OE9XS0JmRGZlZG00Q0lkcUVLRHpkbjJidlRUVzVtUGR0dG8tR3FiWFFFQjRvVk96VF9WRVdldUhYZ013cVZQc2tMOEV0Qw==
 	// has_next_page: true
-	//
-	// count: 123857879
-	// end_cursor: QVFBVU5mdl8wbkJicmcxZllsTDlfYkdsZGVFM3FqRkxXMzNWbTItaExralR5ZnREZzhKdGxfUlpzd2dKNDdjNzJERlRPU2xkY2ZyM2l5Q2l2VWNvaERDZg==
+	// 64
+	// count: 64956350
+	// end_cursor: QVFBdnY2X2FFcXQ2eDZaSWIzc2tUdl9UQVZDZ05kSDA3SXhiZGV3eVBaZFBnSlVxWmp4U0h6c2trS2NPaWdQX1Q3RUpzS3RRdEZtOUplb2ZaNUJoVWEwLQ==
 	// has_next_page: true
+	// 68
 }
 
 func ExampleCrawler_Crawl() {
 	crawler := New()
-	crawler.Crawl("gophercon")
-	fmt.Printf("count: %d\n", crawler.Count)
-	fmt.Printf("end_cursor: %s\n", crawler.EndCursor)
-	fmt.Printf("has_next_page: %t\n", crawler.HasNextPage)
+	crawler.Crawl("kakao")
+	fmt.Println(crawler)
+	fmt.Println(len(crawler.InstaPosts))
 	// Output:
-	// count: 924
+	// count: 0
 	// end_cursor:
 	// has_next_page: false
+	// 352
 }

@@ -16,14 +16,10 @@ func HandleTopSearch(c *gin.Context) {
 	s := searcher.New()
 	hashtags, err := s.TopSearch(query)
 	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"data": nil,
-		})
+		c.JSON(http.StatusNotFound, nil)
 		return
 	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": hashtags,
-	})
+	c.JSON(http.StatusOK, hashtags)
 }
 
 // HandleCrawl handles /api/v1/crawl
@@ -32,14 +28,6 @@ func HandleCrawl(c *gin.Context) {
 	c.BindJSON(&req)
 	secondLayer := req.SecondLayer
 	thirdLayer := req.ThirdLayer
-	resp, err := meta.Search(secondLayer, thirdLayer)
-	if err != nil {
-		c.JSON(http.StatusNotFound, gin.H{
-			"data": nil,
-		})
-		return
-	}
-	c.JSON(http.StatusOK, gin.H{
-		"data": resp,
-	})
+	resp := meta.Search(secondLayer, thirdLayer)
+	c.JSON(http.StatusOK, resp)
 }

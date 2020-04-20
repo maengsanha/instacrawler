@@ -2,34 +2,44 @@
 
 [![GitHub](https://img.shields.io/badge/-GitHub-181717?logo=GitHub)](https://github.com/joshua-dev/instacrawler)
 
+
+
 ## 1. API 명세서 개요
 
   본 문서는 API 정의와 명세를 포함하며, 개발 목적으로 활용함.
 
+
+
 <br />
+
+
 
 ## 2. API 목록
 
   - 1. /api/v1/topsearch
   - 2. /api/v1/crawl
 
+
+
 <br />
+
+
 
 ## 3. API 명세서
 
 ### 1. /api/v1/topsearch
-  
+
   <br>
-  
+
   <img width="250" src="https://user-images.githubusercontent.com/62831866/78666393-44de1a00-7912-11ea-948b-fb77e5833ca8.jpeg">
 
   위와 같이 인스타그램 상단 검색 시 출력되는 연관 해시태그 목록을 json 형태로 반환합니다.
 
   <br>
 
-  | method |           path           |   Request    |       Response       |
-  | :----: | :----------------------: | :----------: | :------------------: |
-  | `GET`  | /api/v1/topsearch?query= | (string) 검색어 | (json) 상단 해시태그 검색 결과 |
+| method |       path        |     Request     |            Response            |
+| :----: | :---------------: | :-------------: | :----------------------------: |
+| `GET`  | /api/v1/topsearch | (string) 검색어 | (json) 상단 해시태그 검색 결과 |
 
   <br>
 
@@ -40,10 +50,10 @@
     - name: 관련 해시태그
     - search_result_subtitle: 대략적인 게시물 갯수
     - media_count: 정확한 게시물 갯수
-  
+    
     ```json
     {
-      "data": [
+      [
         {
           "name": "spring",
           "search_result_subtitle": "117m",
@@ -68,15 +78,19 @@
     }      
     ```
 
+
+
 <br>
+
+
 
 ### 2. /api/v1/crawl
 
   메타 검색을 수행하고, 결과를 json 형태로 돌려줍니다.
 
-  | method |     path      |          Request          |    Response     |
-  | :----: | :-----------: | :-----------------------: | :-------------: |
-  | `POST` | /api/v1/crawl | (json) 동의어를 포함한 메타 검색어 정보 | (json) 메타 검색 결과 |
+| method |     path      |          Request          |    Response     |
+| :----: | :-----------: | :-----------------------: | :-------------: |
+| `POST` | /api/v1/crawl | (json) 동의어를 포함한 메타 검색어 정보 | (json) 메타 검색 결과 |
 
   <br>
 
@@ -100,7 +114,7 @@
 
 
   <br>
-  
+
   - Response Body 예시
     <br>
 
@@ -120,7 +134,7 @@
 
     ```json
     {
-      "data": {
+      {
         "second_layer": [
           {
             "text": "#좋반 #좋테 #follow #dm #가수지망생 #가수 #소속사 #f4f",

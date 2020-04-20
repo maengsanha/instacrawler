@@ -25,53 +25,37 @@ func (i InstaPost) String() string {
 
 // TagPage is a GraphQL endpoint json type.
 type TagPage struct {
-	GraphQL graphQL `json:"graphql,omitempty"`
+	GraphQL struct {
+		Hashtag struct {
+			EdgeHashtagToMedia struct {
+				Count    int `json:"count,omitempty"`
+				PageInfo struct {
+					HasNextPage bool   `json:"has_next_page,omitempty"`
+					EndCursor   string `json:"end_cursor,omitempty"`
+				} `json:"page_info,omitempty"`
+				Edges []Edge `json:"edges,omitempty"`
+			} `json:"edge_hashtag_to_media,omitempty"`
+		} `json:"hashtag,omitempty"`
+	} `json:"graphql,omitempty"`
 }
 
-type graphQL struct {
-	Hashtag hashtag `json:"hashtag,omitempty"`
-}
-
-type hashtag struct {
-	EdgeHashtagToMedia edgeHashtagToMedia `json:"edge_hashtag_to_media,omitempty"`
-}
-
-type edgeHashtagToMedia struct {
-	Count    int      `json:"count,omitempty"`
-	PageInfo pageInfo `json:"page_info,omitempty"`
-	Edges    []Edge   `json:"edges,omitempty"`
-}
-
-type pageInfo struct {
-	HasNextPage bool   `json:"has_next_page,omitempty"`
-	EndCursor   string `json:"end_cursor,omitempty"`
-}
-
-// Edge is a field type among Instagram post fields.
+// Edge is an Instagram post type inside the Instagram structure.
 type Edge struct {
-	Node node `json:"node,omitempty"`
+	Node struct {
+		ID                 string `json:"id,omitempty"`
+		EdgeMediaToCaption struct {
+			Edges []innerEdge `json:"edges,omitempty"`
+		} `json:"edge_media_to_caption,omitempty"`
+		Shortcode   string `json:"shortcode,omitempty"`
+		DisplayURL  string `json:"display_url,omitempty"`
+		EdgeLikedBy struct {
+			Count int `json:"count,omitempty"`
+		} `json:"edge_liked_by,omitempty"`
+	} `json:"node,omitempty"`
 }
 
-type node struct {
-	ID                 string             `json:"id,omitempty"`
-	EdgeMediaToCaption edgeMediaToCaption `json:"edge_media_to_caption,omitempty"`
-	Shortcode          string             `json:"shortcode,omitempty"`
-	DisplayURL         string             `json:"display_url,omitempty"`
-	EdgeLikedBy        edgeLikedBy        `json:"edge_liked_by,omitempty"`
-}
-
-type edgeMediaToCaption struct {
-	InEdges []inEdge `json:"edges,omitempty"`
-}
-
-type inEdge struct {
-	InNode inNode `json:"node,omitempty"`
-}
-
-type inNode struct {
-	Text string `json:"text"`
-}
-
-type edgeLikedBy struct {
-	Count int `json:"count,omitempty"`
+type innerEdge struct {
+	Node struct {
+		Text string `json:"text"`
+	} `json:"node,omitempty"`
 }

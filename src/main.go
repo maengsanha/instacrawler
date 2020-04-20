@@ -16,11 +16,11 @@ const (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
-	router := gin.Default()
+	engine := gin.Default()
 
-	router.GET(topSearchPrefix, routers.HandleTopSearch)
+	engine.GET(topSearchPrefix, routers.HandleTopSearch)
 
-	router.POST(crawlPrefix, routers.HandleCrawl)
+	engine.POST(crawlPrefix, routers.HandleCrawl)
 
-	router.Run()
+	engine.Run()
 }

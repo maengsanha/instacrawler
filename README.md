@@ -138,8 +138,8 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 - ### _Routers_
 
-  - [ ] /api/v1/topsearch
-  - [ ] /api/v1/crawl
+  - [x] /api/v1/topsearch
+  - [x] /api/v1/crawl
 
 <br/>
 <br/>
