@@ -2,11 +2,11 @@
 
 ### All we have to do is repeating below loop.
 
-* `1`: go to Instagram hashtag explore page source with a query.
+* `1`  Go to Instagram hashtag explore page with a given `query`.
   
-  https://www.instagram.com/explore/tags/{query}/
+  https://www.instagram.com/explore/tags/`query`/?__a=1
 
-* `2`: parse post data from page source. (Init)
+* `2`  Parse **json** data.
   
   post data of index `idx`:
   
@@ -14,15 +14,23 @@
 
   next GraphQL endpoint: **end_cursor**
 
-* `3`: go to next pagination, and you will get freaky **json**. (Next)
+* `3`  Go to next pagination, and you will get freaky **json**.
 
   next pagination url:
   
-  https://www.instagram.com/explore/tags/{query}/?__a=1&max_id={end_cursor}
+  https://www.instagram.com/explore/tags/`query`/?__a=1&max_id={end_cursor}
 
   then parse post data, next **end_cursor**.
 
-* `4`: go to `3` until **has_next_page** is true.
+* `4`  Go to `3` until **has_next_page** is true.
+
+
+
+:heavy_exclamation_mark: Warning
+
+You will often get **404 ERROR** while performing above `1` and `3`.
+
+Don't panic, retry request, and you will get normal response.
 
 ***
 

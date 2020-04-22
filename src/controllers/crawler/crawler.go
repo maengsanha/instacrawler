@@ -4,12 +4,10 @@ package crawler
 import (
 	"errors"
 	"fmt"
-	"io"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"sync"
-
-	"github.com/PuerkitoBio/goquery"
 
 	jsoniter "github.com/json-iterator/go"
 
@@ -66,7 +64,12 @@ func (c *Crawler) init(query string) error {
 
 	defer resp.Body.Close()
 
-	if err = c.update(resp.Body); err != nil {
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if err = c.update(data); err != nil {
 		return err
 	}
 
@@ -88,7 +91,12 @@ func (c *Crawler) next(query string) error {
 
 	defer resp.Body.Close()
 
-	if err = c.update(resp.Body); err != nil {
+	data, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return err
+	}
+
+	if err = c.update(data); err != nil {
 		return err
 	}
 
@@ -96,15 +104,11 @@ func (c *Crawler) next(query string) error {
 }
 
 // update updates crawler with a given json.
-func (c *Crawler) update(body io.ReadCloser) error {
+func (c *Crawler) update(data []byte) error {
 	var syncer sync.WaitGroup
 	var tagPage core.TagPage
-	doc, err := goquery.NewDocumentFromReader(body)
-	if err != nil {
-		return err
-	}
 
-	if err = json.Unmarshal([]byte(doc.Text()), &tagPage); err != nil {
+	if err := json.Unmarshal(data, &tagPage); err != nil {
 		return err
 	}
 
