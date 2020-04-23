@@ -12,7 +12,8 @@ BINARY_UNIX = $(BINARY_FILE)_unix
 all: run
 
 install:
-	$(GOGET)
+	$(GOGET) -u github.com/gin-gonic/gin
+	$(GOGET) -u github.com/joshua-dev/instacrawler
 
 build:
 	$(GOBUILD) -o $(BINARY_FILE) -v ./src/main.go

@@ -4,17 +4,16 @@ import (
 	"net/http"
 
 	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
+	"github.com/joshua-dev/instacrawler/src/controllers/top"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joshua-dev/instacrawler/src/controllers/meta"
-	"github.com/joshua-dev/instacrawler/src/controllers/searcher"
 )
 
 // HandleTopSearch handles /api/v1/topsearch
 func HandleTopSearch(c *gin.Context) {
 	query := c.Query("query")
-	s := searcher.New()
-	hashtags, err := s.TopSearch(query)
+	hashtags, err := top.Search(query)
 	if err != nil {
 		c.JSON(http.StatusNotFound, nil)
 		return

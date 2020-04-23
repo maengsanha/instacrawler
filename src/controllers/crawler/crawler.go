@@ -15,10 +15,7 @@ import (
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
-const (
-	maxCrawlSize   int    = 360
-	requestBaseURL string = "https://www.instagram.com/explore/tags/"
-)
+const requestPrefix string = "https://www.instagram.com/explore/tags/"
 
 var json jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
 
@@ -34,12 +31,14 @@ type Crawler struct {
 type Request struct {
 	SecondLayer []string `json:"second_layer,omitempty"`
 	ThirdLayer  []string `json:"third_layer,omitempty"`
+	EndCursor   string   `json:"end_cursor"`
 }
 
 // Response is a crawling response body type.
 type Response struct {
 	SecondLayer []core.InstaPost `json:"second_layer,omitempty"`
 	ThirdLayer  []core.InstaPost `json:"third_layer,omitempty"`
+	EndCursor   string           `json:"end_cursor"`
 }
 
 // New returns a new Crawler.
@@ -54,7 +53,7 @@ func (c *Crawler) String() string {
 
 // init crawls page source from first Instagram hastag explore page with a given query.
 func (c *Crawler) init(query string) error {
-	var requestURL string = fmt.Sprintf("%s%s/?__a=1", requestBaseURL, url.QueryEscape(query))
+	var requestURL string = fmt.Sprintf("%s%s/?__a=1", requestPrefix, url.QueryEscape(query))
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -81,7 +80,7 @@ func (c *Crawler) next(query string) error {
 	if !c.hasNextPage {
 		return errors.New("Reach end of GraphQL endpoint")
 	}
-	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestBaseURL, query, c.endCursor)
+	var requestURL string = fmt.Sprintf("%s%s/?__a=1&max_id=%s", requestPrefix, query, c.endCursor)
 
 	resp, err := http.Get(requestURL)
 	if err != nil {
@@ -142,7 +141,7 @@ func (c *Crawler) Crawl(query string) {
 	err := c.init(query)
 	checker.CheckError(err)
 
-	for c.hasNextPage && (len(c.InstaPosts) < maxCrawlSize) {
+	for c.hasNextPage {
 		err = c.next(query)
 		checker.CheckError(err)
 	}

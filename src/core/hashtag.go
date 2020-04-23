@@ -3,13 +3,12 @@ package core
 
 import "fmt"
 
-// Hashtags is a list of related hashtags type
-// provided when searching at the top of Instagram.
-type Hashtags []Content
-
-// Content is an Instagram content type.
-type Content struct {
-	Hashtag Hashtag `json:"hashtag,omitempty"`
+// SpriteHashtag is a type of associated search term
+// recommended when searching on top of Instagram.
+type SpriteHashtag struct {
+	Hashtags []struct {
+		Hashtag Hashtag `json:"hashtag,omitempty"`
+	} `json:"hashtags,omitempty"`
 }
 
 // Hashtag is an Instagram hashtag type.
@@ -20,15 +19,14 @@ type Hashtag struct {
 }
 
 // String implements fmt.Stringer interface.
-func (h Hashtag) String() string {
-	return fmt.Sprintf("%s %s %d", h.Name, h.SearchResultSubtitle, h.MediaCount)
+func (s SpriteHashtag) String() (str string) {
+	for _, hashtag := range s.Hashtags {
+		str += fmt.Sprintln(hashtag.Hashtag.String())
+	}
+	return
 }
 
 // String implements fmt.Stringer interface.
-func (h Hashtags) String() string {
-	var str string
-	for _, c := range h {
-		str += fmt.Sprintf("%s\n", c.Hashtag.String())
-	}
-	return str
+func (h Hashtag) String() string {
+	return fmt.Sprintf("#%s %s %d", h.Name, h.SearchResultSubtitle, h.MediaCount)
 }
