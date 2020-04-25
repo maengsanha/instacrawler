@@ -70,7 +70,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // _AND implements AND operation.
-    func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
+      func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
       ```
 
       
@@ -81,7 +81,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     
       ```go
       // _OR implements OR operation.
-  func _OR(layer []*crawler.Crawler) (set core.PostSet)
+      func _OR(layer []*crawler.Crawler) (set core.PostSet)
       ```
 
       
