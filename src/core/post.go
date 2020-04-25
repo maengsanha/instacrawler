@@ -20,12 +20,11 @@ func (i InstaPost) String() string {
 	return fmt.Sprintf("%s\n%s\n%d\n%s", i.URL, i.SRC, i.Like, i.Text)
 }
 
-// TagPage is an Instagram page source json type.
+// TagPage is an Instagram json page source type.
 type TagPage struct {
 	GraphQL struct {
 		Hashtag struct {
 			EdgeHashtagToMedia struct {
-				Count    int `json:"count,omitempty"`
 				PageInfo struct {
 					HasNextPage bool   `json:"has_next_page,omitempty"`
 					EndCursor   string `json:"end_cursor,omitempty"`

@@ -1,4 +1,4 @@
-// Package top implements the top search crawling logic on Instagram.
+// Package top implements the Instagram top search crawling logic.
 package top
 
 import (

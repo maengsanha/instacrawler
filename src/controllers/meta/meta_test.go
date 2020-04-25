@@ -1,4 +1,4 @@
-// Package meta implements meta-search.
+// Package meta implements Instagram meta-search engine logics.
 package meta
 
 import "fmt"

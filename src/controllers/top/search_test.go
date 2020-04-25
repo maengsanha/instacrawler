@@ -1,4 +1,4 @@
-// Package top implements the top search crawling logic on Instagram.
+// Package top implements the Instagram top search crawling logic.
 package top
 
 import "fmt"
@@ -12,6 +12,8 @@ func ExampleSearch() {
 		fmt.Println(hashtag)
 	}
 	// Output:
-	// #kakao 674k posts 674895
-	// #kakaofriends 501k posts 501300
+	// #kakao 675k posts 675332
+	// #kakaofriends 501k posts 501545
+	// #kakaolukek 24.8k posts 24822
+	// #kakaotalk 146k posts 146284
 }
