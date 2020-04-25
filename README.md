@@ -68,33 +68,39 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
   
     - [x] _AND: 2계층과 3계층 검색 결과에 AND 연산 수행
   
-    ```go
+      ```go
       // _AND implements AND operation.
-  func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
+    func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
       ```
 
+      
+  
     <br/>
   
     - [x] _OR: 같은 계층의 검색 결과들에 중복 없는 OR 연산 수행
-  
-    ```go
+    
+      ```go
       // _OR implements OR operation.
-    func _OR(layer []*crawler.Crawler) (set core.PostSet)
+  func _OR(layer []*crawler.Crawler) (set core.PostSet)
       ```
-
+  
+      
+  
     <br/>
-  
+    
     - [x] categorize: 2계층과 3계층 검색 결과로 OR/AND 연산 수행
-  
-    ```go
+    
+  ```go
       // categorize implements categorization of meta-search.
     func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, []core.InstaPost)
       ```
-
+  
+      
+    
     <br/>
-  
+    
     - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
-  
+    
       ```go
       // Search implements meta-search with the given search terms of second layer and third layer.
     func Search(secondLayer, thirdLayer []string) ([]byte, error)
