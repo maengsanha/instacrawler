@@ -2,81 +2,100 @@
 package meta
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
-// _AND implements AND operation.
-func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult []core.InstaPost, thirdLayerResult []core.InstaPost) {
+// Search implements meta-search with search terms of second layer and third layer.
+func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string) crawler.Response {
+	queries := append(secondLayer, thirdLayer...)
+	caches := append(secondLayerCache, thirdLayerCache...)
+	crawlers := make([]func() ([]core.InstaPost, string, error), len(queries))
+	crawlingResults := make([][]core.InstaPost, len(queries))
+	endCursors := make([]string, len(caches))
+
 	var syncer sync.WaitGroup
 
-	for secondLayerPost := range secondLayer {
-		for thirdLayerPost := range thirdLayer {
-			syncer.Add(1)
-			go func(secondLayerPost, thirdLayerPost core.InstaPost, secondLayer, thirdLayer []core.InstaPost) {
-				defer syncer.Done()
-				if secondLayerPost.ID == thirdLayerPost.ID {
-					thirdLayerResult = append(thirdLayerResult, thirdLayerPost)
+	for idx, query := range queries {
+		crawlers[idx] = crawler.Generator(query, caches[idx])
+	}
+
+	fmt.Println("successfully generated functions.")
+
+	for idx, crawler := range crawlers {
+		syncer.Add(1)
+		go func(i int, f func() ([]core.InstaPost, string, error)) {
+			defer syncer.Done()
+			var success, failure int
+			var endCursor string
+			var crawlingResult []core.InstaPost
+			for success < 3 && failure < 3 {
+				posts, pagination, err := f()
+				if err != nil {
+					failure++
 				} else {
-					secondLayerResult = append(secondLayerResult, secondLayerPost)
+					success++
+					crawlingResult = append(crawlingResult, posts...)
+					endCursor = pagination
 				}
-			}(secondLayerPost, thirdLayerPost, secondLayerResult, thirdLayerResult)
-		}
+			}
+			endCursors[i] = endCursor
+			crawlingResults[i] = crawlingResult
+		}(idx, crawler)
 	}
 	syncer.Wait()
 
-	return secondLayerResult, thirdLayerResult
+	fmt.Println("successfully crawled.")
+
+	secondLayerCrawlingResults, thirdLayerCrawlingResults := crawlingResults[:len(secondLayer)], crawlingResults[len(secondLayer):]
+	secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet := _OR(secondLayerCrawlingResults), _OR(thirdLayerCrawlingResults)
+
+	fmt.Println("successfully performed OR operation.")
+
+	secondLayerResult, thirdLayerResult := _AND(secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet)
+
+	fmt.Println("successfully performed AND operation.")
+
+	return crawler.Response{
+		SecondLayer:      secondLayerResult,
+		ThirdLayer:       thirdLayerResult,
+		SecondLayerCache: endCursors[:len(secondLayer)],
+		ThirdLayerCache:  endCursors[len(secondLayer):],
+	}
 }
 
 // _OR implements OR operation.
-func _OR(layer []*crawler.Crawler) core.PostSet {
+func _OR(posts [][]core.InstaPost) core.PostSet {
 	set := make(core.PostSet)
-	for _, c := range layer {
-		for _, post := range c.InstaPosts {
-			if _, exists := set[post]; !exists {
-				set[post] = struct{}{}
+	for _, postArr := range posts {
+		for _, post := range postArr {
+			if _, exists := set[post.ID]; !exists {
+				set[post.ID] = post
 			}
 		}
 	}
-
 	return set
 }
 
-// categorize implements categorization of meta-search.
-func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, []core.InstaPost) {
-	secondLayerPostSet := _OR(secondLayer)
-	thirdLayerPostSet := _OR(thirdLayer)
-
-	return _AND(secondLayerPostSet, thirdLayerPostSet)
-}
-
-// Search implements meta-search with search terms of second layer and third layer.
-func Search(secondLayer, thirdLayer []string) crawler.Response {
-	var queries []string = append(secondLayer, thirdLayer...)
-	var workers []*crawler.Crawler
+// _AND implements AND operation.
+func _AND(secondLayerSet, thirdLayerSet core.PostSet) (second, third []core.InstaPost) {
 	var syncer sync.WaitGroup
 
-	for i := 0; i < len(queries); i++ {
-		workers = append(workers, crawler.New())
-	}
-
-	for index, worker := range workers {
+	for id, post := range secondLayerSet {
 		syncer.Add(1)
-		go func(idx int, c *crawler.Crawler) {
+		go func(i string, p core.InstaPost) {
 			defer syncer.Done()
-			c.Crawl(queries[idx])
-		}(index, worker)
+			if _, exists := thirdLayerSet[i]; exists {
+				third = append(third, p)
+			} else {
+				second = append(second, p)
+			}
+		}(id, post)
 	}
+
 	syncer.Wait()
-
-	secondLayerResult, thirdLayerResult := categorize(workers[:len(secondLayer)], workers[len(secondLayer):])
-
-	output := crawler.Response{
-		SecondLayer: secondLayerResult,
-		ThirdLayer:  thirdLayerResult,
-	}
-
-	return output
+	return
 }

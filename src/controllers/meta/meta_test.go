@@ -4,16 +4,15 @@ package meta
 import "fmt"
 
 func Example_meta_Search() {
-	secondLayer := []string{
-		"golang",
-	}
-	thirdLayer := []string{
-		"gophercon",
-	}
-
-	output := Search(secondLayer, thirdLayer)
-	fmt.Printf("Second Layer: %s\n", output.SecondLayer)
-	fmt.Printf("Third Layer: %s\n", output.ThirdLayer)
+	secondLayerQueries := []string{"카페", "cafe", "카페추천", "카페투어"}
+	thirdLayerQueries := []string{"스타벅스", "스벅", "starbucks"}
+	secondLayerCache := []string{"", "", "", ""}
+	thirdLayerCache := []string{"", "", ""}
+	resp := Search(secondLayerQueries, thirdLayerQueries, secondLayerCache, thirdLayerCache)
+	fmt.Println(len(resp.SecondLayer))
+	fmt.Println(len(resp.ThirdLayer))
+	fmt.Println(len(resp.SecondLayerCache))
+	fmt.Println(len(resp.ThirdLayerCache))
 	// Output:
 	//
 }

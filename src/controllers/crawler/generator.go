@@ -22,16 +22,16 @@ var json jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
 type Request struct {
 	SecondLayer      []string `json:"second_layer,omitempty"`
 	ThirdLayer       []string `json:"third_layer,omitempty"`
-	SecondLayerCache []string `json:"second_layer_cache,omitempty"`
-	ThirdLayerCache  []string `json:"third_layer_cache,omitempty"`
+	SecondLayerCache []string `json:"second_layer_cache"`
+	ThirdLayerCache  []string `json:"third_layer_cache"`
 }
 
 // Response is a crawling response body type.
 type Response struct {
 	SecondLayer      []core.InstaPost `json:"second_layer,omitempty"`
 	ThirdLayer       []core.InstaPost `json:"third_layer,omitempty"`
-	SecondLayerCache []string         `json:"second_layer_cache,omitempty"`
-	ThirdLayerCache  []string         `json:"third_layer_cache,omitempty"`
+	SecondLayerCache []string         `json:"second_layer_cache"`
+	ThirdLayerCache  []string         `json:"third_layer_cache"`
 }
 
 // Generator generates an Instagram crawler.

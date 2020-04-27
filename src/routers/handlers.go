@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
+	"github.com/joshua-dev/instacrawler/src/controllers/meta"
 	"github.com/joshua-dev/instacrawler/src/controllers/top"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joshua-dev/instacrawler/src/controllers/meta"
 )
 
 // HandleTopSearch handles /api/v1/topsearch
@@ -27,6 +27,8 @@ func HandleCrawl(c *gin.Context) {
 	c.BindJSON(&req)
 	secondLayer := req.SecondLayer
 	thirdLayer := req.ThirdLayer
-	resp := meta.Search(secondLayer, thirdLayer)
+	secondLayerCache := req.SecondLayerCache
+	thirdLayerCache := req.ThirdLayerCache
+	resp := meta.Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache)
 	c.JSON(http.StatusOK, resp)
 }

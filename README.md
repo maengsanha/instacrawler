@@ -86,17 +86,6 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       
     
-      <br/>
-    
-    - [x] categorize: 2계층과 3계층 검색 결과로 OR/AND 연산 수행
-    
-      ```go
-      // categorize implements categorization of meta-search.
-      func categorize(secondLayer, thirdLayer []*crawler.Crawler) ([]core.InstaPost, []core.InstaPost)
-      ```
-    
-      
-    
       <br />
     
     - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
@@ -105,7 +94,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
       // Search implements meta-search with the given search terms of second layer and third layer.
       func Search(secondLayer, thirdLayer []string) ([]byte, error)
       ```
-
+  
   
 
 <br/>
