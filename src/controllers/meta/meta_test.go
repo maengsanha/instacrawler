@@ -4,9 +4,9 @@ package meta
 import "fmt"
 
 func Example_meta_Search() {
-	secondLayerQueries := []string{"카페", "cafe", "카페추천", "카페투어"}
-	thirdLayerQueries := []string{"스타벅스", "스벅", "starbucks"}
-	secondLayerCache := []string{"", "", "", ""}
+	secondLayerQueries := []string{"cafe", "cafestagram", "cafetour"}
+	thirdLayerQueries := []string{"starbucks", "starbuckskorea", "starbuckscoffee"}
+	secondLayerCache := []string{"", "", ""}
 	thirdLayerCache := []string{"", "", ""}
 	resp := Search(secondLayerQueries, thirdLayerQueries, secondLayerCache, thirdLayerCache)
 	fmt.Println(len(resp.SecondLayer))
@@ -14,5 +14,8 @@ func Example_meta_Search() {
 	fmt.Println(len(resp.SecondLayerCache))
 	fmt.Println(len(resp.ThirdLayerCache))
 	// Output:
-	//
+	// 399
+	// 1
+	// 3
+	// 3
 }

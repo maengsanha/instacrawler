@@ -2,11 +2,10 @@
 package top
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 	"net/url"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"github.com/joshua-dev/instacrawler/src/core"
 )
@@ -15,8 +14,6 @@ const (
 	requestPrefix string = "https://www.instagram.com/web/search/topsearch/?context=blended&query="
 	reelOption    string = "include_reel=true"
 )
-
-var json jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
 
 // Search implements top search on Instagram with a given query.
 func Search(query string) (hashtags []core.Hashtag, err error) {

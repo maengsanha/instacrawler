@@ -3,10 +3,10 @@ Content-Type: application/json
 
 {
   "second_layer": [
-    "dog", "cat"
+    "cafe", "cafestagram"
   ],
   "third_layer": [
-    "clothe"
+    "starbucks"
   ],
   "second_layer_cache": [
     "", ""

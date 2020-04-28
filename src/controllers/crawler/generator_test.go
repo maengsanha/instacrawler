@@ -1,14 +1,10 @@
 // Package crawler implements Instagram crawling logic.
 package crawler
 
-import (
-	"fmt"
-
-	"github.com/joshua-dev/instacrawler/src/core"
-)
+import "fmt"
 
 func ExampleGenerator() {
-	crawler := Generator("kakao", "")
+	crawler := Generator("cafe", "")
 	for i := 0; i < 3; i++ {
 		posts, endCursor, err := crawler()
 		if err != nil {
@@ -18,31 +14,10 @@ func ExampleGenerator() {
 		fmt.Println(endCursor)
 	}
 	// Output:
-	// 70
-	// QVFDMnEtTzBSYjlpLXR5aEMxNnhlS2ZncjJvVG12ZmtRRVNyZG1FUy16eHp2NERQRXFWTDNYZF95am5lMTNTV1phVGJYZktKVDAzS2w0MFdfTXJJQ3FqZw==
 	// 71
-	// QVFBcGlaX2ZGdGpNNVdLdGRwZHNJck9zSG10cmtJSmxPNWlxdHRhUHVDelJmcHBXWVlLb1Q0NC1QRmhlYWYwZFNlcDJhQldIUVlHZkRUZzFSX19zR1JaOA==
-	// 70
-	// QVFBaE1xNVYwbkJxR25tUGRWeWZrd1JxajlELUg0OWhnUzVhSzNkUVlXSV9wNG1JQS1jWkJDY0J1MXkyZEs4eVhOLThfZ2FERHVqTlJTR1NWXzA0OHJSTQ==
-}
-
-func ExampleGenerator2() {
-	queries := []string{"kakao", "카카오"}
-	caches := make([]string, len(queries))
-	crawlers := make([]func() ([]core.InstaPost, string, error), len(queries))
-	fmt.Println(crawlers)
-	for idx, query := range queries {
-		crawlers[idx] = Generator(query, caches[idx])
-	}
-	fmt.Println(crawlers)
-	for i := 0; i < len(crawlers); i++ {
-		posts, endCursor, err := crawlers[i]()
-		if err != nil {
-			fmt.Println(err)
-		}
-		fmt.Println(len(posts))
-		fmt.Println(endCursor)
-	}
-	// Output:
-	//
+	// QVFDdnlxSHl3RDZiNGRya08zbElfM3NzUGwxbFhVM2N4Z05fTHd1bG90cVM2OTZaSTBIa1Z0VzlGM3Bya3RqUG11Tk91RFA5WlE0RDIyUEJpOTYtdVRIZg==
+	// 72
+	// QVFDS29fY19VZG8tTVY2cFNSTkZfOTczTnctTHZzd0dNcFdKVERXUy1MV0pjRHp5ZkdVa1VyUWFyNmhpNDZKcjRXSE1EMU1xd3lwaDFITndLYnJXV2tyQg==
+	// 72
+	// QVFDZjFtTTJKM2dELVdpZnVHbzlMRmxpRXZkNVhPajZXX3FOajF3b2JENDFlN3JkWW1kOWQ4SloyNkw1OXI1cHRZei1OUEE5SnRuRkpPWWIwSkl4N2lrWQ==
 }

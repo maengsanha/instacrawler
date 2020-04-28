@@ -57,7 +57,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // Generator generates an Instagram crawler.
-      func Generator(query string) func() ([]core.InstaPost, string, error)
+      func Generator(query, cache string) func() ([]core.InstaPost, string, error)
       ```
 
       
@@ -70,7 +70,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // _AND implements AND operation.
-      func _AND(secondLayer, thirdLayer core.PostSet) (secondLayerResult *core.InstaPosts, thirdLayerResult *core.InstaPosts)
+      func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet) (secondLayerPosts, thirdLayerPosts []core.InstaPost)
       ```
 
       
@@ -81,7 +81,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     
       ```go
       // _OR implements OR operation.
-      func _OR(layer []*crawler.Crawler) (set core.PostSet)
+      func _OR(posts [][]core.InstaPost) core.PostSet
       ```
 
       
@@ -91,8 +91,8 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
     
       ```go
-      // Search implements meta-search with the given search terms of second layer and third layer.
-      func Search(secondLayer, thirdLayer []string) ([]byte, error)
+      // Search implements meta-search with search terms of second layer and third layer.
+      func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string) crawler.Response
       ```
   
   

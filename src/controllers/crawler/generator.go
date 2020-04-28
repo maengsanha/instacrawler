@@ -2,34 +2,31 @@
 package crawler
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
-
-	jsoniter "github.com/json-iterator/go"
 
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
 const (
-	requestPrefix string = "https://www.instagram.com/explore/tags/"
-	requestSuffix string = "/?__a=1"
-	nextSuffix    string = "&max_id="
+	requestPrefix  string = "https://www.instagram.com/explore/tags/"
+	requestSuffix  string = "/?__a=1"
+	endpointPrefix string = "&max_id="
 )
-
-var json jsoniter.API = jsoniter.ConfigCompatibleWithStandardLibrary
 
 // Request is a crawling request body type.
 type Request struct {
-	SecondLayer      []string `json:"second_layer,omitempty"`
-	ThirdLayer       []string `json:"third_layer,omitempty"`
+	SecondLayer      []string `json:"second_layer"`
+	ThirdLayer       []string `json:"third_layer"`
 	SecondLayerCache []string `json:"second_layer_cache"`
 	ThirdLayerCache  []string `json:"third_layer_cache"`
 }
 
 // Response is a crawling response body type.
 type Response struct {
-	SecondLayer      []core.InstaPost `json:"second_layer,omitempty"`
-	ThirdLayer       []core.InstaPost `json:"third_layer,omitempty"`
+	SecondLayer      []core.InstaPost `json:"second_layer"`
+	ThirdLayer       []core.InstaPost `json:"third_layer"`
 	SecondLayerCache []string         `json:"second_layer_cache"`
 	ThirdLayerCache  []string         `json:"third_layer_cache"`
 }
@@ -47,7 +44,7 @@ func Generator(query, cache string) func() ([]core.InstaPost, string, error) {
 		if endCursor == "" {
 			requestURL = fmt.Sprintf("%s%s%s", requestPrefix, query, requestSuffix)
 		} else {
-			requestURL = fmt.Sprintf("%s%s%s%s%s", requestPrefix, query, requestSuffix, nextSuffix, endCursor)
+			requestURL = fmt.Sprintf("%s%s%s%s%s", requestPrefix, query, requestSuffix, endpointPrefix, endCursor)
 		}
 
 		resp, err := http.Get(requestURL)
