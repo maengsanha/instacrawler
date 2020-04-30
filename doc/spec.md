@@ -45,24 +45,24 @@
   {
     [
       {
-        "name": "spring",
-        "search_result_subtitle": "117m",
-        "media_count": "117420799"
+        "name": "café",
+        "search_result_subtitle": "7m posts",
+        "media_count": "7080757"
       },
       {
-        "name": "springiscoming",
-        "search_result_subtitle": "3.3m",
-        "media_count": "3360549"
+        "name": "cafe",
+        "search_result_subtitle": "60.5m posts",
+        "media_count": "60537500"
       },
       {
-        "name": "springflowers",
-        "search_result_subtitle": "2.3m",
-        "media_count": "2309203"
+        "name": "cafè",
+        "search_result_subtitle": "205k posts",
+        "media_count": "205626"
       },
       {
-        "name": "springfashion",
-        "search_result_subtitle": "3.4m",
-        "media_count": "3420750"
+        "name": "cafehopper",
+        "search_result_subtitle": "184k posts",
+        "media_count": "184403"
       }
     ]
   }
@@ -83,75 +83,101 @@
 - Request Body 예시
   <br />
 
-  second_layer: (array) 2차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
+  second_layer: (array) 2차 카테고리의 검색어와 동의어를 모아놓은 container
   <br />
-  third_layer: (array) 3차 카테고리의 검색어와 동의어를 모아놓은 iterable data structure
+  third_layer: (array) 3차 카테고리의 검색어와 동의어를 모아놓은 container
 
   <br />
 
-  end_cursor: (string) 마지막으로 크롤링을 수행한 pagination의 GrqphQL end point
+  second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. second_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 second_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
 
+  <br />
+  
+  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container.
+  
+  third_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 third_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
+  
   ```json
-  {
-    "second_layer": ["가수", "singer", "vocalist"],
-    "third_layer": ["bts", "방탄소년단"],
-    "end_cursor": "QVFBMG11aHBCS0JHVHBEQ3ZVR3F2RnpvbmV1UlBkenpTbm50T1B4TDJxYmpWUGhkc285Y3AtdGFCcE5iNHFzM1pmM2p0Ni1paXI0enNYTXpGbEd2dzRvYw=="
+{
+    "second_layer": ["cafe", "cafestagram", "cafetour"],
+  "third_layer": ["starbucks", "스타벅스"],
+    "second_layer_cache": [
+      "QVFBQUNUTTlFa3lxYkp1TnFrcXc1Q01EcUR5RzFMMlBleUo2aGd6VUlkcTNjTnU5d1dzUmphTFFldXdrNV9vNGRrdWJMeVdiNGNxTDR2MGRwOXZFUXF0Zg==",
+      "QVFBRDFFcmdrcVRUYlltNHFGTFVnXzFfS2JHeFJfdXhvMm5hMGdiY29zS25zVlNzOXl6aGpqWmt6Sjc1RkY5RzhfclctSlN5ckJEaWdTbTlkME5NNVdZMQ==",
+      "QVFERFprbF9ZUS0yaGEzaEEyLTBHYTJhTV9heUd0QVZGci12NFg4andGeXdISnh0N0hsSXI2ajZnTllOcUxiTkpOa24tX3RMZl9tWndvaDZBcVRCZEpoaA=="
+    ],
+    "third_layer_cache": [
+      "QVFESC1jVnl3RFNwOEoycmtTWU5kbzh2UGFlT1RMSm1iSlFobmNmVkZ1cHloWjdxRllKcFQwaExtZ1FZeHh4YUE0T3hlQmpUVVNSeU1FbWVwWGt2S0loSw==",
+      "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
+    ]
   }
   ```
-
+  
   <br />
-
+  
 - Response Body 예시
   <br />
 
-  second_layer: 2차 카테고리에만 속하는 검색 결과들의 iterable data structure
+  second_layer: (array) 2차 카테고리에만 속하는 검색 결과들의 container
   <br />
-  third_layer: 2차와 3차 카테고리 모두에 속하는 검색 결과들의 iterable data structure
+  third_layer: (array) 2차와 3차 카테고리 모두에 속하는 검색 결과들의 container
 
   <br />
 
-  end_cursor: (string) 마지막으로 크롤링을 수행한 pagination의 GrqphQL end point
+  second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
   
   <br />
   
+  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
+  
+  <br />
+
   text: (string) 게시물의 텍스트
-  <br />
+<br />
   url: (string) 게시물의 주소. 실제 주소는 앞에 `https://www.instagram.com/p/` 가 붙습니다.
 <br />
-  src: (string) 게시물 커버 사진 이미지의 URL
-<br />
+  src: (string) 게시물 썸네일 이미지의 URL
+  <br />
   like: (int) 게시물이 받은 좋아요 갯수
-
+  
   ```json
   {
     "second_layer": [
       {
-        "text": "#좋반 #좋테 #follow #dm #가수지망생 #가수 #소속사 #f4f",
-        "url": "Ej7e2uOP-223",
-        "src": "https://scontent-gmp1-1.cdinstagram/v/23kksok.d892",
-        "like": 180
+        "text": "Доброе утро, лол... #доброеутро #лол #рязань #россия#провинция #художник#фото #город#городскойпейзаж #позитив #film #fun #artist #ussr#doll #art#amsterdam#model #kunst #clee #cat#fashion #focus #cofe #cosplay#instagood #smile#aesthetic",
+        "url": "B_mF4EjqNl7",
+        "src": "https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c0.129.1034.1034a/s640x640/95215546_725892411549121_3193384201677613315_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_cat=101&_nc_ohc=Omw1LX-TfuUAX8f8SqF&oh=9db818251361c6546dce1caff936e763&oe=5ED3816C",
+        "like": 16
       },
       {
-        "text": "#trusty #diskey #트러스티 #디스키",
-        "url": "nERT39ui-1",
-        "src": "https://scontent-gmp1-1.cdinstagram/v/13141kdiw",
-        "like": 218
+        "text": "Wednesday night prayer from the #northumbriacommunity with added wine #community #love #faith #church #churchofengland #cofe #sacredspace #Manchester #flixton #trafford #easter",
+        "url": "B_lCgYvhah2",
+        "src": "https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-15/e35/c0.150.540.540a/95262123_142863047281654_4603480536606033666_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_cat=110&_nc_ohc=j2UHP62HNkwAX-jebJz&oh=ca30f0635f45ebf1cbc7b1fcfe30709b&oe=5EAC9015",
+        "like": 2
       }
     ],
     "third_layer": [
       {
-        "text": "#bts #army #btsarmy #태태 #태형 #김태형 #태형이 #fff #sure #f4f",
-        "url": "EO790-dsm732",
-        "src": "https://scontent-gmp1-1.cdinstagram/v/763je0jd",
-        "like": 456
+        "text": "#momofgirls #girldad #bows #hairbows #girlygirl #prettygirls #babygirls #mommyandme #mommytobe #itsagirl #mickeymouse #disney #starbucks #coffee #minniemouse #shopsmall #supportsmallbusiness #sarapebow #mexican #colorful #cowgirl #coyboyboots #boots #bowsandboots #virgencita #easter #bunny #sfgiants #lol #loldolls",
+        "url": "B_mKt1KFYU3",
+        "src": "https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/s640x640/94890594_128293228823301_6353733521411040583_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_cat=109&_nc_ohc=3Yy02sOzbcQAX_Vswjk&oh=efa97956384df18e9c1d90687e9f81bc&oe=5ED5BE2B",
+        "like": 1
       },
       {
-        "text": "거울 탐난다.",
-        "url": "56Fti980-112",
-        "src": "https://scontent-gmp1-1.cdinstagram/v/241rt50",
-        "like": 277
+        "text": "@nohutlupil4v \n#aktiftakipci #takipedenitakipederim #takipet #aktiftakipçi #instadaily #takipplus #seguidores #takipetkinliği #chuvadelikes #takipetanindakazan #likeforlikes #instagram #sdv❤️ #instagood #begeniyebegeni #begeni #geritakipyapiyorum #geritakipvar #instalike #gtvardir #sigaosbaloes #sdv #rtb #sdvtodos #starbucks #streetphotography #sdvgeral #instalike #instafashion",
+        "url": "B_mKQmQAD5a",
+        "src": "https://scontent-gmp1-1.cdninstagram.com/v/t51.2885-15/sh0.08/e35/c10.0.730.730a/s640x640/95542093_935289073610807_693225298869737381_n.jpg?_nc_ht=scontent-gmp1-1.cdninstagram.com&_nc_cat=111&_nc_ohc=fWI676klOH8AX_wmaL0&oh=cc0705b754af875bcc6c417d72273955&oe=5ED36DA7",
+        "like": 19
       }
     ],
-    "end_cursor": "QVFBMG11aHBCS0JHVHBEQ3ZVR3F2RnpvbmV1UlBkenpTbm50T1B4TDJxYmpWUGhkc285Y3AtdGFCcE5iNHFzM1pmM2p0Ni1paXI0enNYTXpGbEd2dzRvYw=="
+    "second_layer_cache": [
+      "QVFBQUNUTTlFa3lxYkp1TnFrcXc1Q01EcUR5RzFMMlBleUo2aGd6VUlkcTNjTnU5d1dzUmphTFFldXdrNV9vNGRrdWJMeVdiNGNxTDR2MGRwOXZFUXF0Zg==",
+      "QVFBRDFFcmdrcVRUYlltNHFGTFVnXzFfS2JHeFJfdXhvMm5hMGdiY29zS25zVlNzOXl6aGpqWmt6Sjc1RkY5RzhfclctSlN5ckJEaWdTbTlkME5NNVdZMQ==",
+      "QVFERFprbF9ZUS0yaGEzaEEyLTBHYTJhTV9heUd0QVZGci12NFg4andGeXdISnh0N0hsSXI2ajZnTllOcUxiTkpOa24tX3RMZl9tWndvaDZBcVRCZEpoaA=="
+    ],
+    "third_layer_cache": [
+      "QVFESC1jVnl3RFNwOEoycmtTWU5kbzh2UGFlT1RMSm1iSlFobmNmVkZ1cHloWjdxRllKcFQwaExtZ1FZeHh4YUE0T3hlQmpUVVNSeU1FbWVwWGt2S0loSw==",
+      "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
+    ]
   }
   ```
