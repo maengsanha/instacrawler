@@ -84,23 +84,17 @@
   <br />
 
   second_layer: (array) 2차 카테고리의 검색어와 동의어를 모아놓은 container
-  <br />
-  third_layer: (array) 3차 카테고리의 검색어와 동의어를 모아놓은 container
 
-  <br />
+  third_layer: (array) 3차 카테고리의 검색어와 동의어를 모아놓은 container
 
   second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. second_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 second_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
 
-  <br />
-  
-  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container.
-  
-  third_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 third_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
-  
+  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. third_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 third_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
+
   ```json
-{
+  {
     "second_layer": ["cafe", "cafestagram", "cafetour"],
-  "third_layer": ["starbucks", "스타벅스"],
+    "third_layer": ["starbucks", "스타벅스"],
     "second_layer_cache": [
       "QVFBQUNUTTlFa3lxYkp1TnFrcXc1Q01EcUR5RzFMMlBleUo2aGd6VUlkcTNjTnU5d1dzUmphTFFldXdrNV9vNGRrdWJMeVdiNGNxTDR2MGRwOXZFUXF0Zg==",
       "QVFBRDFFcmdrcVRUYlltNHFGTFVnXzFfS2JHeFJfdXhvMm5hMGdiY29zS25zVlNzOXl6aGpqWmt6Sjc1RkY5RzhfclctSlN5ckJEaWdTbTlkME5NNVdZMQ==",
@@ -112,34 +106,30 @@
     ]
   }
   ```
-  
-  <br />
-  
-- Response Body 예시
+
+    <br />
+
+* Response Body 예시
   <br />
 
   second_layer: (array) 2차 카테고리에만 속하는 검색 결과들의 container
-  <br />
+
   third_layer: (array) 2차와 3차 카테고리 모두에 속하는 검색 결과들의 container
 
-  <br />
-
   second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
-  
-  <br />
-  
+
   third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
-  
+
   <br />
 
   text: (string) 게시물의 텍스트
-<br />
+
   url: (string) 게시물의 주소. 실제 주소는 앞에 `https://www.instagram.com/p/` 가 붙습니다.
-<br />
+
   src: (string) 게시물 썸네일 이미지의 URL
-  <br />
+
   like: (int) 게시물이 받은 좋아요 갯수
-  
+
   ```json
   {
     "second_layer": [
