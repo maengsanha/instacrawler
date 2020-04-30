@@ -35,12 +35,15 @@ type Response struct {
 func Generator(query, cache string) func() ([]core.InstaPost, string, error) {
 	var hasNextPage bool = true
 	var endCursor string = cache
+
 	return func() ([]core.InstaPost, string, error) {
 		if !hasNextPage {
 			return nil, endCursor, fmt.Errorf("Reached end of pagination")
 		}
+
 		var tagPage core.TagPage
 		var requestURL string
+
 		if endCursor == "" {
 			requestURL = fmt.Sprintf("%s%s%s", requestPrefix, query, requestSuffix)
 		} else {
@@ -74,6 +77,7 @@ func Generator(query, cache string) func() ([]core.InstaPost, string, error) {
 			}
 			posts[idx] = post
 		}
+
 		hasNextPage = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.HasNextPage
 		endCursor = tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.PageInfo.EndCursor
 		return posts, endCursor, nil

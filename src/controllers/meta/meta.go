@@ -8,6 +8,11 @@ import (
 	"github.com/joshua-dev/instacrawler/src/core"
 )
 
+const (
+	maxSuccessCount int = 3
+	maxFailureCount int = 3
+)
+
 // Search implements meta-search with search terms of second layer and third layer.
 func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string) crawler.Response {
 	queries := append(secondLayer, thirdLayer...)
@@ -28,7 +33,7 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 			var success, failure int
 			var endpoint string
 			var crawlingResult []core.InstaPost
-			for success < 3 && failure < 3 {
+			for success < maxSuccessCount && failure < maxFailureCount {
 				posts, endCursor, err := f()
 				if err != nil {
 					failure++
