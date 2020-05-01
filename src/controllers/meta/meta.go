@@ -50,7 +50,20 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 	syncer.Wait()
 
 	secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet := _OR(crawlingResults[:len(secondLayer)]), _OR(crawlingResults[len(secondLayer):])
-	secondLayerResult, thirdLayerResult := _AND(secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet)
+
+	secondLayerChannel, thirdLayerChannel := make(chan core.InstaPost, len(secondLayerCrawlingResultSet)), make(chan core.InstaPost, len(secondLayerCrawlingResultSet))
+
+	_AND(secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet, secondLayerChannel, thirdLayerChannel)
+
+	secondLayerResult, thirdLayerResult := make([]core.InstaPost, len(secondLayerChannel)), make([]core.InstaPost, len(thirdLayerChannel))
+
+	for idx := 0; idx < len(secondLayerChannel); idx++ {
+		secondLayerResult[idx] = <-secondLayerChannel
+	}
+
+	for idx := 0; idx < len(thirdLayerChannel); idx++ {
+		thirdLayerResult[idx] = <-thirdLayerChannel
+	}
 
 	return crawler.Response{
 		SecondLayer:      secondLayerResult,
@@ -74,21 +87,23 @@ func _OR(posts [][]core.InstaPost) core.PostSet {
 }
 
 // _AND implements AND operation.
-func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet) (secondLayerPosts, thirdLayerPosts []core.InstaPost) {
+func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet, secondLayerChannel, thirdLayerChannel chan core.InstaPost) {
 	var syncer sync.WaitGroup
+
+	defer close(secondLayerChannel)
+	defer close(thirdLayerChannel)
 
 	for id, post := range secondLayerPostSet {
 		syncer.Add(1)
-		go func(i string, p core.InstaPost) {
+		go func(id string, post core.InstaPost) {
 			defer syncer.Done()
-			if _, exists := thirdLayerPostSet[i]; exists {
-				thirdLayerPosts = append(thirdLayerPosts, p)
+			if _, exists := thirdLayerPostSet[id]; exists {
+				thirdLayerChannel <- post
 			} else {
-				secondLayerPosts = append(secondLayerPosts, p)
+				secondLayerChannel <- post
 			}
 		}(id, post)
 	}
 
 	syncer.Wait()
-	return
 }

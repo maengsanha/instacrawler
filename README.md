@@ -66,18 +66,18 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
   - Meta
 
-    - [x] _AND: 2계층과 3계층 검색 결과에 AND 연산 수행
+    - [x] _AND: 2계층과 3계층 검색 결과로 AND 연산 수행
 
       ```go
       // _AND implements AND operation.
-      func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet) (secondLayerPosts, thirdLayerPosts []core.InstaPost)
+      func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet, secondLayerChannel, thirdLayerChannel chan core.InstaPost)
       ```
 
       
     
       <br/>
 
-    - [x] _OR: 같은 계층의 검색 결과들에 중복 없는 OR 연산 수행
+    - [x] _OR: 같은 계층의 검색 결과에 OR 연산 수행
     
       ```go
       // _OR implements OR operation.
@@ -110,7 +110,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 - ### _Optimization_
 
   - [x] Concurrency
-  - [ ] Pipelining
+  - [x] Pipelining
   - [ ] Heuristic Search
 
 <br/>
