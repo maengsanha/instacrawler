@@ -3,15 +3,15 @@ Content-Type: application/json
 
 {
   "second_layer": [
-    "cafe", "cafestagram"
+    "cafe", "카페", "coffee", "커피", "일상"
   ],
   "third_layer": [
-    "starbucks"
+    "starbucks", "스타벅스", "daily", "korea", "coffee"
   ],
   "second_layer_cache": [
-    "", ""
+    "", "", "", "", ""
   ],
   "third_layer_cache": [
-    ""
+    "", "", "", "", ""
   ]
 }
