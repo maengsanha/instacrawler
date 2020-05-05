@@ -57,13 +57,25 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 
 	secondLayerResult, thirdLayerResult := make([]core.InstaPost, len(secondLayerChannel)), make([]core.InstaPost, len(thirdLayerChannel))
 
-	for idx := 0; idx < len(secondLayerChannel); idx++ {
-		secondLayerResult[idx] = <-secondLayerChannel
+	var secondLayerSyncer sync.WaitGroup
+	for idx := range secondLayerResult {
+		secondLayerSyncer.Add(1)
+		go func(i int) {
+			defer secondLayerSyncer.Done()
+			secondLayerResult[i] = <-secondLayerChannel
+		}(idx)
 	}
+	secondLayerSyncer.Wait()
 
-	for idx := 0; idx < len(thirdLayerChannel); idx++ {
-		thirdLayerResult[idx] = <-thirdLayerChannel
+	var thirdLayerSyncer sync.WaitGroup
+	for idx := range thirdLayerResult {
+		thirdLayerSyncer.Add(1)
+		go func(i int) {
+			defer thirdLayerSyncer.Done()
+			thirdLayerResult[i] = <-thirdLayerChannel
+		}(idx)
 	}
+	thirdLayerSyncer.Wait()
 
 	return crawler.Response{
 		SecondLayer:      secondLayerResult,
