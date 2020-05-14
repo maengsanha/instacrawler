@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	topSearchPrefix string = "/api/v1/topsearch"
-	crawlPrefix     string = "/api/v1/crawl"
+	topSearchPathPrefix string = "/api/v1/topsearch"
+	crawlPathPrefix     string = "/api/v1/crawl"
 )
 
 func main() {
@@ -18,9 +18,9 @@ func main() {
 
 	engine := gin.Default()
 
-	engine.GET(topSearchPrefix, routers.HandleTopSearch)
+	engine.GET(topSearchPathPrefix, routers.HandleTopSearch)
 
-	engine.POST(crawlPrefix, routers.HandleCrawl)
+	engine.POST(crawlPathPrefix, routers.HandleCrawl)
 
 	engine.Run()
 }

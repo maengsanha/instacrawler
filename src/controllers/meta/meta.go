@@ -30,9 +30,11 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 		syncer.Add(1)
 		go func(i int, f func() ([]core.InstaPost, string, error)) {
 			defer syncer.Done()
-			var success, failure int
-			var endpoint string
-			var crawlingResult []core.InstaPost
+			var (
+				success, failure int
+				endpoint         string
+				crawlingResult   []core.InstaPost
+			)
 			for success < maxSuccessCount && failure < maxFailureCount {
 				posts, endCursor, err := f()
 				if err != nil {
