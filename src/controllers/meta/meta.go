@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	maxSuccessCount int = 3
-	maxFailureCount int = 3
+	maxSuccessCnt int = 3
+	maxDeathCnt   int = 3
 )
 
 // Search implements meta-search with search terms of second layer and third layer.
@@ -31,16 +31,17 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 		go func(i int, f func() ([]core.InstaPost, string, error)) {
 			defer syncer.Done()
 			var (
-				success, failure int
-				endpoint         string
-				crawlingResult   []core.InstaPost
+				successCnt, deathCnt int
+				endpoint             string
+				crawlingResult       []core.InstaPost
 			)
-			for success < maxSuccessCount && failure < maxFailureCount {
+			for successCnt < maxSuccessCnt && deathCnt < maxDeathCnt {
 				posts, endCursor, err := f()
 				if err != nil {
-					failure++
+					deathCnt++
 				} else {
-					success++
+					successCnt++
+					deathCnt = 0
 					crawlingResult = append(crawlingResult, posts...)
 					endpoint = endCursor
 				}
