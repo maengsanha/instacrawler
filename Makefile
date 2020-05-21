@@ -11,7 +11,6 @@ BINARY_FILE = instacrawler
 all: run
 
 install:
-	$(GOGET) -u github.com/gin-gonic/gin
 	$(GOGET) -u github.com/joshua-dev/instacrawler
 
 build:

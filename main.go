@@ -16,6 +16,8 @@ const (
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
 
+	gin.SetMode(gin.ReleaseMode)
+
 	engine := gin.Default()
 
 	engine.GET(topSearchPathPrefix, routers.HandleTopSearch)
