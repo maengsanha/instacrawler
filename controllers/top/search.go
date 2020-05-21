@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/joshua-dev/instacrawler/src/core"
+	"github.com/joshua-dev/instacrawler/core"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 	"runtime"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joshua-dev/instacrawler/src/routers"
+	"github.com/joshua-dev/instacrawler/routers"
 )
 
 const (

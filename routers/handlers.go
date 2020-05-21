@@ -3,11 +3,10 @@ package routers
 import (
 	"net/http"
 
-	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
-	"github.com/joshua-dev/instacrawler/src/controllers/meta"
-	"github.com/joshua-dev/instacrawler/src/controllers/top"
-
 	"github.com/gin-gonic/gin"
+	"github.com/joshua-dev/instacrawler/controllers/crawler"
+	"github.com/joshua-dev/instacrawler/controllers/meta"
+	"github.com/joshua-dev/instacrawler/controllers/top"
 )
 
 // HandleTopSearch handles /api/v1/topsearch

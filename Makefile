@@ -7,7 +7,6 @@ GOCLEAN = $(GOCMD) clean
 GOTEST = $(GOCMD) test
 GOGET = $(GOCMD) get
 BINARY_FILE = instacrawler
-BINARY_UNIX = $(BINARY_FILE)_unix
 
 all: run
 
@@ -16,7 +15,10 @@ install:
 	$(GOGET) -u github.com/joshua-dev/instacrawler
 
 build:
-	$(GOBUILD) -o $(BINARY_FILE) -v ./src/main.go
+	$(GOBUILD) -o $(BINARY_FILE) -v ./main.go
+
+build_linux:
+	GOOS=linux GOARCH=amd64 $(GOBUILD) -o $(BINARY_FILE)
 
 test:
 	$(GOTEST) -v ./src/...
@@ -27,4 +29,3 @@ run:
 clean:
 	@$(GOCLEAN)
 	@rm -f $(BINARY_FILE)
-	@rm -f $(BINARY_UNIX)

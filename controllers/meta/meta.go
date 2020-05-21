@@ -4,8 +4,8 @@ package meta
 import (
 	"sync"
 
-	"github.com/joshua-dev/instacrawler/src/controllers/crawler"
-	"github.com/joshua-dev/instacrawler/src/core"
+	"github.com/joshua-dev/instacrawler/controllers/crawler"
+	"github.com/joshua-dev/instacrawler/core"
 )
 
 const (
