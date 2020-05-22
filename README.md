@@ -5,7 +5,6 @@
 ### INSTAGRAM CRAWLER
 
 [![build](https://img.shields.io/badge/build-passing-brightgreen?style=flat&logo=github)](https://github.com/joshua-dev/instacrawler/pulse)
-
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
 
 <br/>
