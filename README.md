@@ -2,10 +2,11 @@
 
 <br/>
 
-# **INSTAGRAM CRAWLER**
+### INSTAGRAM CRAWLER
+
+[![build](https://img.shields.io/badge/build-passing-brightgreen?style=flat&logo=github)](https://github.com/joshua-dev/instacrawler/pulse)
 
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
-[![go version](https://img.shields.io/badge/go-1.14-00ADD8)](https://go.dev)
 
 <br/>
 
@@ -15,9 +16,9 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 <br/>
 
-## :white_check_mark: TODO
+### :white_check_mark: TODO
 
-- ### _Core_
+- #### _Core_
 
   - [x] InstaPost: 인스타그램 게시물
 
@@ -38,7 +39,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 <br/>
 
-- ### _Controllers_
+- #### _Controllers_
 
   - top
 
@@ -99,7 +100,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 <br/>
 
-- ### _Routers_
+- #### _Routers_
 
   - [x] /api/v1/topsearch
   - [x] /api/v1/crawl
@@ -107,18 +108,18 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 <br/>
 <br/>
 
-- ### _Optimization_
+- #### _Optimization_
 
   - [x] Concurrency
   - [x] Pipelining
-  - [ ] Heuristic Search
 
 <br/>
 
 - [x] API 명세서 작성
+- [x] AWS 배포
 
 <br/>
 <br/>
 
-## [LICENSE](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
+#### [LICENSE](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
 
