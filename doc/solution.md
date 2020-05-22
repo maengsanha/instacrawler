@@ -30,11 +30,5 @@
 
 You will often get **404 ERROR** while performing above `1` and `3`.
 
-Don't panic, retry request, and you will get normal response.
-
-***
-
-## Result
-
-![result_screen_shot](https://user-images.githubusercontent.com/29545214/77256323-df9eed80-6cb0-11ea-841d-0c6a5b759644.png)
+Do not panic, retry request, and you will get normal response.
 
