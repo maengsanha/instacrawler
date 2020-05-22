@@ -1,4 +1,4 @@
-POST http://172.31.33.14:3000/api/v1/crawl
+POST http://13.125.96.172:3000/api/v1/crawl
 Content-Type: application/json
 
 {
