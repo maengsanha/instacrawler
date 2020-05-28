@@ -1,4 +1,4 @@
-// Package main runs Instagram crawler api server.
+// Package main runs Instagram meta search API server.
 package main
 
 import (

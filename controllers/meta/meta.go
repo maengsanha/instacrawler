@@ -52,6 +52,21 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 	}
 	syncer.Wait()
 
+	if len(secondLayer) == 0 {
+		crawlingResultSet := _OR(crawlingResults)
+		var crawlingResult []core.InstaPost
+		for _, post := range crawlingResultSet {
+			crawlingResult = append(crawlingResult, post)
+		}
+
+		return crawler.Response{
+			SecondLayer:      nil,
+			ThirdLayer:       crawlingResult,
+			SecondLayerCache: endpoints[:len(secondLayer)],
+			ThirdLayerCache:  endpoints[len(secondLayer):],
+		}
+	}
+
 	secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet := _OR(crawlingResults[:len(secondLayer)]), _OR(crawlingResults[len(secondLayer):])
 
 	secondLayerChannel, thirdLayerChannel := make(chan core.InstaPost, len(secondLayerCrawlingResultSet)), make(chan core.InstaPost, len(secondLayerCrawlingResultSet))

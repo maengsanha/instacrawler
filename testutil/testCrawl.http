@@ -15,3 +15,19 @@ Content-Type: application/json
     "", "", "", "", ""
   ]
 }
+
+###
+
+POST http://ec2-13-125-96-172.ap-northeast-2.compute.amazonaws.com:3000/api/v1/crawl
+Content-Type: application/json
+
+{
+  "second_layer": [],
+  "third_layer": [
+    "starbucks", "스타벅스", "daily", "korea", "coffee"
+  ],
+  "second_layer_cache": [],
+  "third_layer_cache": [
+    "", "", "", "", ""
+  ]
+}
