@@ -99,6 +99,8 @@
 
   **higher_layer와 higher_layer_cache의 길이가 서로 다르거나 lower_layer와 lower_layer_cache의 길이가 서로 다르면 null이 반환되니 유의하세요. (Status code: 400 BadRequest)**
   
+  
+  
   ```json
   {
     "higher_layer": ["cafe", "cafestagram", "cafetour"],
@@ -110,12 +112,12 @@
     ],
     "lower_layer_cache": [
       "QVFESC1jVnl3RFNwOEoycmtTWU5kbzh2UGFlT1RMSm1iSlFobmNmVkZ1cHloWjdxRllKcFQwaExtZ1FZeHh4YUE0T3hlQmpUVVNSeU1FbWVwWGt2S0loSw==",
-      "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
+    "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
     ]
-}
+  }
   ```
   
-    <br />
+  <br />
 
 * Response Body 예시
   <br />
