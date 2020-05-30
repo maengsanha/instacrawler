@@ -5,7 +5,7 @@ import (
 	"sync"
 
 	"github.com/joshua-dev/instacrawler/controllers/crawler"
-	"github.com/joshua-dev/instacrawler/core"
+	"github.com/joshua-dev/instacrawler/core/instagram"
 )
 
 const (
@@ -14,11 +14,11 @@ const (
 )
 
 // Search implements meta-search with search terms of second layer and third layer.
-func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string) crawler.Response {
-	queries := append(secondLayer, thirdLayer...)
-	caches := append(secondLayerCache, thirdLayerCache...)
-	workers := make([]func() ([]core.InstaPost, string, error), len(queries))
-	crawlingResults := make([][]core.InstaPost, len(queries))
+func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) crawler.Response {
+	queries := append(higherLayer, lowerLayer...)
+	caches := append(higherLayerCache, lowerLayerCache...)
+	workers := make([]func() ([]instagram.Post, string, error), len(queries))
+	crawlingResults := make([][]instagram.Post, len(queries))
 	endpoints := make([]string, len(caches))
 
 	for idx, query := range queries {
@@ -28,12 +28,12 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 	var syncer sync.WaitGroup
 	for idx, worker := range workers {
 		syncer.Add(1)
-		go func(i int, f func() ([]core.InstaPost, string, error)) {
+		go func(i int, f func() ([]instagram.Post, string, error)) {
 			defer syncer.Done()
 			var (
 				successCnt, deathCnt int
 				endpoint             string
-				crawlingResult       []core.InstaPost
+				crawlingResult       []instagram.Post
 			)
 			for successCnt < maxSuccessCnt && deathCnt < maxDeathCnt {
 				posts, endCursor, err := f()
@@ -52,86 +52,84 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 	}
 	syncer.Wait()
 
-	if len(secondLayer) == 0 {
-		crawlingResultSet := _OR(crawlingResults)
+	if len(higherLayer) == 0 {
+		crawlingResultMap := _OR(crawlingResults)
 
-		var crawlingResult []core.InstaPost
+		var crawlingResult []instagram.Post
 
-		for _, post := range crawlingResultSet {
+		for _, post := range crawlingResultMap {
 			crawlingResult = append(crawlingResult, post)
 		}
 		return crawler.Response{
-			SecondLayer:      []core.InstaPost{},
-			ThirdLayer:       crawlingResult,
-			SecondLayerCache: endpoints[:len(secondLayerCache)],
-			ThirdLayerCache:  endpoints[len(secondLayerCache):],
+			HigherLayer:      []instagram.Post{},
+			LowerLayer:       crawlingResult,
+			HigherLayerCache: endpoints[:len(higherLayerCache)],
+			LowerLayerCache:  endpoints[len(higherLayerCache):],
 		}
 	}
 
-	secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet := _OR(crawlingResults[:len(secondLayer)]), _OR(crawlingResults[len(secondLayer):])
+	higherLayerCrawlingResultMap, lowerLayerCrawlingResultMap := _OR(crawlingResults[:len(higherLayer)]), _OR(crawlingResults[len(higherLayer):])
 
-	secondLayerChannel, thirdLayerChannel := make(chan core.InstaPost, len(secondLayerCrawlingResultSet)), make(chan core.InstaPost, len(secondLayerCrawlingResultSet))
+	higherLayerChannel, lowerLayerChannel := make(chan instagram.Post, len(higherLayerCrawlingResultMap)), make(chan instagram.Post, len(higherLayerCrawlingResultMap))
 
-	_AND(secondLayerCrawlingResultSet, thirdLayerCrawlingResultSet, secondLayerChannel, thirdLayerChannel)
+	_AND(higherLayerCrawlingResultMap, lowerLayerCrawlingResultMap, higherLayerChannel, lowerLayerChannel)
 
-	secondLayerResult, thirdLayerResult := make([]core.InstaPost, len(secondLayerChannel)), make([]core.InstaPost, len(thirdLayerChannel))
+	higherLayerResult, lowerLayerResult := make([]instagram.Post, len(higherLayerChannel)), make([]instagram.Post, len(lowerLayerChannel))
 
-	var secondLayerSyncer sync.WaitGroup
-	for idx := range secondLayerResult {
-		secondLayerSyncer.Add(1)
+	for idx := range higherLayerResult {
+		syncer.Add(1)
 		go func(i int) {
-			defer secondLayerSyncer.Done()
-			secondLayerResult[i] = <-secondLayerChannel
+			defer syncer.Done()
+			higherLayerResult[i] = <-higherLayerChannel
 		}(idx)
 	}
-	secondLayerSyncer.Wait()
+	syncer.Wait()
 
-	var thirdLayerSyncer sync.WaitGroup
-	for idx := range thirdLayerResult {
-		thirdLayerSyncer.Add(1)
+	for idx := range lowerLayerResult {
+		syncer.Add(1)
 		go func(i int) {
-			defer thirdLayerSyncer.Done()
-			thirdLayerResult[i] = <-thirdLayerChannel
+			defer syncer.Done()
+			lowerLayerResult[i] = <-lowerLayerChannel
 		}(idx)
 	}
-	thirdLayerSyncer.Wait()
+	syncer.Wait()
 
 	return crawler.Response{
-		SecondLayer:      secondLayerResult,
-		ThirdLayer:       thirdLayerResult,
-		SecondLayerCache: endpoints[:len(secondLayer)],
-		ThirdLayerCache:  endpoints[len(secondLayer):],
+		HigherLayer:      higherLayerResult,
+		LowerLayer:       lowerLayerResult,
+		HigherLayerCache: endpoints[:len(higherLayerCache)],
+		LowerLayerCache:  endpoints[len(higherLayerCache):],
 	}
 }
 
 // _OR implements OR operation.
-func _OR(posts [][]core.InstaPost) core.PostSet {
-	set := make(core.PostSet)
+func _OR(posts [][]instagram.Post) instagram.PostMap {
+	postMap := make(instagram.PostMap)
 	for _, postArr := range posts {
 		for _, post := range postArr {
-			if _, exists := set[post.ID]; !exists {
-				set[post.ID] = post
+			if _, exists := postMap[post.ID]; !exists {
+				postMap[post.ID] = post
 			}
 		}
 	}
-	return set
+	return postMap
 }
 
 // _AND implements AND operation.
-func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet, secondLayerChannel, thirdLayerChannel chan core.InstaPost) {
+func _AND(higherLayerPostMap, lowerLayerPostMap instagram.PostMap, higherLayerChannel, lowerLayerChannel chan instagram.Post) {
 	var syncer sync.WaitGroup
 
-	defer close(secondLayerChannel)
-	defer close(thirdLayerChannel)
+	defer close(higherLayerChannel)
+	defer close(lowerLayerChannel)
 
-	for id, post := range secondLayerPostSet {
+	for id, post := range higherLayerPostMap {
 		syncer.Add(1)
-		go func(id string, post core.InstaPost) {
+		go func(id string, post instagram.Post) {
 			defer syncer.Done()
-			if _, exists := thirdLayerPostSet[id]; exists {
-				thirdLayerChannel <- post
+			if _, exists := lowerLayerPostMap[id]; exists {
+				lowerLayerChannel <- post
 			} else {
-				secondLayerChannel <- post
+				higherLayerChannel <- post
 			}
 		}(id, post)
 	}

@@ -89,42 +89,44 @@
 - Request Body 예시
   <br />
 
-  second_layer: (array) 2차 카테고리의 검색어와 동의어를 모아놓은 container
+  higher_layer: (array) 상위 카테고리의 검색어와 동의어를 모아놓은 container
 
-  third_layer: (array) 3차 카테고리의 검색어와 동의어를 모아놓은 container
+  lower_layer: (array) 하위 카테고리의 검색어와 동의어를 모아놓은 container
 
-  second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. second_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 second_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
+  higher_layer_cache: (array) higher_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. higher_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 higher_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
 
-  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. third_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 third_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
+  lower_layer_cache: (array) lower_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container. lower_layer와 길이가 반드시 같아야하며, 처음 요청 시엔 lower_layer의 길이만큼 빈 문자열이 있도록 초기화합니다.
 
+  **higher_layer와 higher_layer_cache의 길이가 서로 다르거나 lower_layer와 lower_layer_cache의 길이가 서로 다르면 null이 반환되니 유의하세요. (Status code: 400 BadRequest)**
+  
   ```json
   {
-    "second_layer": ["cafe", "cafestagram", "cafetour"],
-    "third_layer": ["starbucks", "스타벅스"],
-    "second_layer_cache": [
+    "higher_layer": ["cafe", "cafestagram", "cafetour"],
+    "lower_layer": ["starbucks", "스타벅스"],
+    "higher_layer_cache": [
       "QVFBQUNUTTlFa3lxYkp1TnFrcXc1Q01EcUR5RzFMMlBleUo2aGd6VUlkcTNjTnU5d1dzUmphTFFldXdrNV9vNGRrdWJMeVdiNGNxTDR2MGRwOXZFUXF0Zg==",
       "QVFBRDFFcmdrcVRUYlltNHFGTFVnXzFfS2JHeFJfdXhvMm5hMGdiY29zS25zVlNzOXl6aGpqWmt6Sjc1RkY5RzhfclctSlN5ckJEaWdTbTlkME5NNVdZMQ==",
       "QVFERFprbF9ZUS0yaGEzaEEyLTBHYTJhTV9heUd0QVZGci12NFg4andGeXdISnh0N0hsSXI2ajZnTllOcUxiTkpOa24tX3RMZl9tWndvaDZBcVRCZEpoaA=="
     ],
-    "third_layer_cache": [
+    "lower_layer_cache": [
       "QVFESC1jVnl3RFNwOEoycmtTWU5kbzh2UGFlT1RMSm1iSlFobmNmVkZ1cHloWjdxRllKcFQwaExtZ1FZeHh4YUE0T3hlQmpUVVNSeU1FbWVwWGt2S0loSw==",
       "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
     ]
-  }
+}
   ```
-
+  
     <br />
 
 * Response Body 예시
   <br />
 
-  second_layer: (array) 2차 카테고리에만 속하는 검색 결과들의 container
+  higher_layer: (array) 상위 카테고리에만 속하는 검색 결과들의 container
 
-  third_layer: (array) 2차와 3차 카테고리 모두에 속하는 검색 결과들의 container
+  lower_layer: (array) 상위 카테고리와 하위 카테고리 모두에 속하는 검색 결과들의 container
 
-  second_layer_cache: (array) second_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
+  higher_layer_cache: (array) higher_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
 
-  third_layer_cache: (array) third_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
+  lower_layer_cache: (array) lower_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
 
   <br />
 
@@ -138,7 +140,7 @@
 
   ```json
   {
-    "second_layer": [
+    "higher_layer": [
       {
         "text": "Доброе утро, лол... #доброеутро #лол #рязань #россия#провинция #художник#фото #город#городскойпейзаж #позитив #film #fun #artist #ussr#doll #art#amsterdam#model #kunst #clee #cat#fashion #focus #cofe #cosplay#instagood #smile#aesthetic",
         "url": "B_mF4EjqNl7",
@@ -152,7 +154,7 @@
         "like": 2
       }
     ],
-    "third_layer": [
+    "lower_layer": [
       {
         "text": "#momofgirls #girldad #bows #hairbows #girlygirl #prettygirls #babygirls #mommyandme #mommytobe #itsagirl #mickeymouse #disney #starbucks #coffee #minniemouse #shopsmall #supportsmallbusiness #sarapebow #mexican #colorful #cowgirl #coyboyboots #boots #bowsandboots #virgencita #easter #bunny #sfgiants #lol #loldolls",
         "url": "B_mKt1KFYU3",
@@ -166,14 +168,15 @@
         "like": 19
       }
     ],
-    "second_layer_cache": [
+    "higher_layer_cache": [
       "QVFBQUNUTTlFa3lxYkp1TnFrcXc1Q01EcUR5RzFMMlBleUo2aGd6VUlkcTNjTnU5d1dzUmphTFFldXdrNV9vNGRrdWJMeVdiNGNxTDR2MGRwOXZFUXF0Zg==",
       "QVFBRDFFcmdrcVRUYlltNHFGTFVnXzFfS2JHeFJfdXhvMm5hMGdiY29zS25zVlNzOXl6aGpqWmt6Sjc1RkY5RzhfclctSlN5ckJEaWdTbTlkME5NNVdZMQ==",
       "QVFERFprbF9ZUS0yaGEzaEEyLTBHYTJhTV9heUd0QVZGci12NFg4andGeXdISnh0N0hsSXI2ajZnTllOcUxiTkpOa24tX3RMZl9tWndvaDZBcVRCZEpoaA=="
     ],
-    "third_layer_cache": [
+    "lower_layer_cache": [
       "QVFESC1jVnl3RFNwOEoycmtTWU5kbzh2UGFlT1RMSm1iSlFobmNmVkZ1cHloWjdxRllKcFQwaExtZ1FZeHh4YUE0T3hlQmpUVVNSeU1FbWVwWGt2S0loSw==",
       "QVFCdUEwRkF4aWtudC1nd2ljVEtzV3JWY1dOUF9rYUdlak5meDBjbzhmQ3R6Umtpa3cybmh2TGlSTlk1Vk5veEJMRmpkTzdSMzlCOExBWXZ1TndFcXg5Mw=="
     ]
   }
   ```
+

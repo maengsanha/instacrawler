@@ -1,10 +1,10 @@
-// Package core defines models for Instagram crawling.
-package core
+// Package instagram defines models for Instagram crawling.
+package instagram
 
 import "fmt"
 
-// InstaPost is an Instagram post type.
-type InstaPost struct {
+// Post is an Instagram post type.
+type Post struct {
 	ID   string `json:"-"`
 	Text string `json:"text"`
 	URL  string `json:"url,omitempty"`
@@ -12,12 +12,12 @@ type InstaPost struct {
 	Like int    `json:"like,omitempty"`
 }
 
-// PostSet is an Instagram post set type.
-type PostSet map[string]InstaPost
+// PostMap is an Instagram post map type.
+type PostMap map[string]Post
 
 // String implements fmt.Stringer interface.
-func (i InstaPost) String() string {
-	return fmt.Sprintf("%s\n%s\n%d\n%s\n", i.URL, i.SRC, i.Like, i.Text)
+func (p Post) String() string {
+	return fmt.Sprintf("%s\n%s\n%d\n%s\n", p.URL, p.SRC, p.Like, p.Text)
 }
 
 // TagPage is an Instagram json page source type.

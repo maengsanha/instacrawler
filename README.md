@@ -19,21 +19,21 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 - #### _Core_
 
-  - [x] InstaPost: 인스타그램 게시물
+  - [x] Post: 인스타그램 게시물
 
     ```go
-    // InstaPost is an Instagram post type.
-    type InstaPost struct
+    // Post is an Instagram post type.
+    type Post struct
     ```
 
   <br/>
 
-  - [x] SpriteHashtag: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
+  - [x] CoreSpriteHashtag: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
 
     ```go
-    // SpriteHashtag is a type of associated search term
+    // CoreSpriteHashtag is a type of associated search term
     // recommended when searching on top of Instagram.
-    type SpriteHashtag struct
+    type CoreSpriteHashtag struct
     ```
 
 <br/>
@@ -46,7 +46,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // Search implements top search on Instagram with a given query.
-      func Search(query string) (hashtags []core.Hashtag, err error)
+      func Search(query string) (hashtags []instagram.Hashtag, err error)
       ```
 
   <br/>
@@ -57,7 +57,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // Generator generates an Instagram crawler.
-      func Generator(query, cache string) func() ([]core.InstaPost, string, error)
+      func Generator(query, cache string) func() ([]instagram.Post, string, error)
       ```
 
       
@@ -70,7 +70,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
       ```go
       // _AND implements AND operation.
-      func _AND(secondLayerPostSet, thirdLayerPostSet core.PostSet, secondLayerChannel, thirdLayerChannel chan core.InstaPost)
+      func _AND(higherLayerPostMap, lowerLayerPostMap instagram.PostMap, higherLayerChannel, lowerLayerChannel chan instagram.Post)
       ```
 
       
@@ -81,7 +81,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     
       ```go
       // _OR implements OR operation.
-      func _OR(posts [][]core.InstaPost) core.PostSet
+      func _OR(posts [][]instagram.Post) instagram.PostMap
       ```
 
       
@@ -92,7 +92,7 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
     
       ```go
       // Search implements meta-search with search terms of second layer and third layer.
-      func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string) crawler.Response
+      func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) crawler.Response
       ```
   
   
@@ -114,8 +114,8 @@ API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/ma
 
 <br/>
 
-- [x] API 명세서 작성
-- [x] AWS 배포
+- [x] API specification
+- [x] AWS deployment
 
 <br/>
 <br/>

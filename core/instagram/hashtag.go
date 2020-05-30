@@ -1,11 +1,11 @@
-// Package core defines models for Instagram crawling.
-package core
+// Package instagram defines models for Instagram crawling.
+package instagram
 
 import "fmt"
 
-// SpriteHashtag is a type of associated search term
+// CoreSpriteHashtag is a type of associated search term
 // recommended when searching on top of Instagram.
-type SpriteHashtag struct {
+type CoreSpriteHashtag struct {
 	Hashtags []struct {
 		Hashtag Hashtag `json:"hashtag,omitempty"`
 	} `json:"hashtags,omitempty"`
@@ -19,8 +19,8 @@ type Hashtag struct {
 }
 
 // String implements fmt.Stringer interface.
-func (s SpriteHashtag) String() (str string) {
-	for _, hashtag := range s.Hashtags {
+func (c CoreSpriteHashtag) String() (str string) {
+	for _, hashtag := range c.Hashtags {
 		str += fmt.Sprintln(hashtag.Hashtag.String())
 	}
 	return

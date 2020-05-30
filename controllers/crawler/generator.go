@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/joshua-dev/instacrawler/core"
+	"github.com/joshua-dev/instacrawler/core/instagram"
 )
 
 const (
@@ -17,31 +17,31 @@ const (
 
 // Request is a crawling request body type.
 type Request struct {
-	SecondLayer      []string `json:"second_layer"`
-	ThirdLayer       []string `json:"third_layer"`
-	SecondLayerCache []string `json:"second_layer_cache"`
-	ThirdLayerCache  []string `json:"third_layer_cache"`
+	HigherLayer      []string `json:"higher_layer"`
+	LowerLayer       []string `json:"lower_layer"`
+	HigherLayerCache []string `json:"higher_layer_cache"`
+	LowerLayerCache  []string `json:"lower_layer_cache"`
 }
 
 // Response is a crawling response body type.
 type Response struct {
-	SecondLayer      []core.InstaPost `json:"second_layer"`
-	ThirdLayer       []core.InstaPost `json:"third_layer"`
-	SecondLayerCache []string         `json:"second_layer_cache"`
-	ThirdLayerCache  []string         `json:"third_layer_cache"`
+	HigherLayer      []instagram.Post `json:"higher_layer"`
+	LowerLayer       []instagram.Post `json:"lower_layer"`
+	HigherLayerCache []string         `json:"higher_layer_cache"`
+	LowerLayerCache  []string         `json:"lower_layer_cache"`
 }
 
 // Generator generates an Instagram crawler.
-func Generator(query, cache string) func() ([]core.InstaPost, string, error) {
+func Generator(query, cache string) func() ([]instagram.Post, string, error) {
 	var hasNextPage bool = true
 	var endCursor string = cache
 
-	return func() ([]core.InstaPost, string, error) {
+	return func() ([]instagram.Post, string, error) {
 		if !hasNextPage {
 			return nil, endCursor, fmt.Errorf("Reached end of pagination")
 		}
 
-		var tagPage core.TagPage
+		var tagPage instagram.TagPage
 		var requestURL string
 
 		if endCursor == "" {
@@ -63,10 +63,10 @@ func Generator(query, cache string) func() ([]core.InstaPost, string, error) {
 			return nil, endCursor, err
 		}
 
-		posts := make([]core.InstaPost, len(tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges))
+		posts := make([]instagram.Post, len(tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges))
 
 		for idx, edge := range tagPage.GraphQL.Hashtag.EdgeHashtagToMedia.Edges {
-			post := core.InstaPost{
+			post := instagram.Post{
 				ID:   edge.Node.ID,
 				URL:  edge.Node.Shortcode,
 				SRC:  edge.Node.ThumbnailSRC,

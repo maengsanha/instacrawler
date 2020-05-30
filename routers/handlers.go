@@ -27,13 +27,8 @@ func HandleCrawl(c *gin.Context) {
 	var req crawler.Request
 	c.BindJSON(&req)
 
-	secondLayer := req.SecondLayer
-	thirdLayer := req.ThirdLayer
-	secondLayerCache := req.SecondLayerCache
-	thirdLayerCache := req.ThirdLayerCache
-
-	if len(secondLayer) == len(secondLayerCache) && len(thirdLayer) == len(thirdLayerCache) {
-		c.JSON(http.StatusOK, meta.Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache))
+	if len(req.HigherLayer) == len(req.HigherLayerCache) && len(req.LowerLayer) == len(req.LowerLayerCache) {
+		c.JSON(http.StatusOK, meta.Search(req.HigherLayer, req.LowerLayer, req.HigherLayerCache, req.LowerLayerCache))
 	} else {
 		c.JSON(http.StatusBadRequest, nil)
 	}

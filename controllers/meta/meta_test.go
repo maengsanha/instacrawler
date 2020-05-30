@@ -11,13 +11,13 @@ func Example_meta_Search() {
 
 	resp := Search(secondLayerQueries, thirdLayerQueries, secondLayerCache, thirdLayerCache)
 
-	fmt.Println(len(resp.SecondLayer))
-	fmt.Println(len(resp.ThirdLayer))
-	fmt.Println(len(resp.SecondLayerCache))
-	fmt.Println(len(resp.ThirdLayerCache))
+	fmt.Println(len(resp.HigherLayer))
+	fmt.Println(len(resp.LowerLayer))
+	fmt.Println(len(resp.HigherLayerCache))
+	fmt.Println(len(resp.LowerLayerCache))
 	// Output:
-	// 606
-	// 319
+	// 680
+	// 322
 	// 5
 	// 5
 }

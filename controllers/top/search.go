@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"net/url"
 
-	"github.com/joshua-dev/instacrawler/core"
+	"github.com/joshua-dev/instacrawler/core/instagram"
 )
 
 const (
@@ -16,7 +16,7 @@ const (
 )
 
 // Search implements top search on Instagram with a given query.
-func Search(query string) (hashtags []core.Hashtag, err error) {
+func Search(query string) (hashtags []instagram.Hashtag, err error) {
 	var requestURL string = fmt.Sprintf("%s%s&%s", requestPrefix, url.QueryEscape(query), reelOption)
 
 	resp, err := http.Get(requestURL)
@@ -25,7 +25,7 @@ func Search(query string) (hashtags []core.Hashtag, err error) {
 	}
 	defer resp.Body.Close()
 
-	var coreSpriteHashtag core.SpriteHashtag
+	var coreSpriteHashtag instagram.CoreSpriteHashtag
 	if err = json.NewDecoder(resp.Body).Decode(&coreSpriteHashtag); err != nil {
 		return
 	}
