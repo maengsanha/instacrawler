@@ -33,9 +33,8 @@ func HandleCrawl(c *gin.Context) {
 	thirdLayerCache := req.ThirdLayerCache
 
 	if len(secondLayer) == len(secondLayerCache) && len(thirdLayer) == len(thirdLayerCache) {
-		resp := meta.Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache)
-		c.JSON(http.StatusOK, resp)
+		c.JSON(http.StatusOK, meta.Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache))
+	} else {
+		c.JSON(http.StatusBadRequest, nil)
 	}
-
-	c.JSON(http.StatusBadRequest, nil)
 }

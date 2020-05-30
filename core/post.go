@@ -17,7 +17,7 @@ type PostSet map[string]InstaPost
 
 // String implements fmt.Stringer interface.
 func (i InstaPost) String() string {
-	return fmt.Sprintf("%s\n%s\n%d\n%s", i.URL, i.SRC, i.Like, i.Text)
+	return fmt.Sprintf("%s\n%s\n%d\n%s\n", i.URL, i.SRC, i.Like, i.Text)
 }
 
 // TagPage is an Instagram json page source type.

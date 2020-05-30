@@ -54,16 +54,17 @@ func Search(secondLayer, thirdLayer, secondLayerCache, thirdLayerCache []string)
 
 	if len(secondLayer) == 0 {
 		crawlingResultSet := _OR(crawlingResults)
+
 		var crawlingResult []core.InstaPost
+
 		for _, post := range crawlingResultSet {
 			crawlingResult = append(crawlingResult, post)
 		}
-
 		return crawler.Response{
-			SecondLayer:      nil,
+			SecondLayer:      []core.InstaPost{},
 			ThirdLayer:       crawlingResult,
-			SecondLayerCache: endpoints[:len(secondLayer)],
-			ThirdLayerCache:  endpoints[len(secondLayer):],
+			SecondLayerCache: endpoints[:len(secondLayerCache)],
+			ThirdLayerCache:  endpoints[len(secondLayerCache):],
 		}
 	}
 
