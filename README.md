@@ -1,124 +1,31 @@
 <img src="https://lh5.googleusercontent.com/proxy/r5D7LX7gbvXfuJU1SFAfCM1SerPt0KcBvR_R0qpXO_fsa39nwCKhyGE0UQbFP99XpSMRuPWrckLRnkoU747FW6EHY1_Gqf1xzhXYhJnIqIHizuhbBX3fh0sgdxbpIwJrDtC9g-uELzM-xYNfiw=s0-d">
 
-<br/>
+<br>
 
 ### INSTAGRAM CRAWLER
 
 [![build](https://img.shields.io/badge/build-passing-brightgreen?style=flat&logo=github)](https://github.com/joshua-dev/instacrawler/pulse)
 [![license](https://img.shields.io/badge/license-MIT-blue)](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
 
-<br/>
+<br>
 
-API 명세서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/spec.md)에 있습니다.
+[**API Specification**](https://github.com/joshua-dev/instacrawler/blob/master/doc/spec.md)
 
-크롤링 솔루션에 대한 문서는 [**여기**](https://github.com/joshua-dev/instacrawler/blob/master/doc/solution.md)에 있습니다.
+[**Instagram Crawling Solution**](https://github.com/joshua-dev/instacrawler/blob/master/doc/solution.md)
 
-<br/>
+<br>
 
-### :white_check_mark: TODO
+**Installation**
 
-- #### _Core_
+```bash
+$ go get -u github.com/joshua-dev/instacrawler
+```
 
-  - [x] Post: 인스타그램 게시물
+<br>
 
-    ```go
-    // Post is an Instagram post type.
-    type Post struct
-    ```
+**Build (Linux)**
 
-  <br/>
-
-  - [x] CoreSpriteHashtag: 인스타그램 상단 검색 시 제공되는 관련 해시 태그 목록
-
-    ```go
-    // CoreSpriteHashtag is a type of associated search term
-    // recommended when searching on top of Instagram.
-    type CoreSpriteHashtag struct
-    ```
-
-<br/>
-
-- #### _Controllers_
-
-  - top
-
-    - [x] Search: 상단 검색창에서 검색 시 나오는 해시 태그 목록과 게시물 갯수 크롤링
-
-      ```go
-      // Search implements top search on Instagram with a given query.
-      func Search(query string) (hashtags []instagram.Hashtag, err error)
-      ```
-
-  <br/>
-
-  - crawler
-
-    - [x] Generator: 인스타그램 게시물 크롤링 함수 생성
-
-      ```go
-      // Generator generates an Instagram crawler.
-      func Generator(query, cache string) func() ([]instagram.Post, string, error)
-      ```
-
-      
-
-  <br/>
-
-  - Meta
-
-    - [x] _AND: 2계층과 3계층 검색 결과로 AND 연산 수행
-
-      ```go
-      // _AND implements AND operation.
-      func _AND(higherLayerPostMap, lowerLayerPostMap instagram.PostMap, higherLayerChannel, lowerLayerChannel chan instagram.Post)
-      ```
-
-      
-    
-      <br/>
-
-    - [x] _OR: 같은 계층의 검색 결과에 OR 연산 수행
-    
-      ```go
-      // _OR implements OR operation.
-      func _OR(posts [][]instagram.Post) instagram.PostMap
-      ```
-
-      
-    
-      <br />
-    
-    - [x] Search: 2계층과 3계층 검색어로 메타 검색 구현
-    
-      ```go
-      // Search implements meta-search with search terms of second layer and third layer.
-      func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) crawler.Response
-      ```
-  
-  
-
-<br/>
-
-- #### _Routers_
-
-  - [x] /api/v1/topsearch
-  - [x] /api/v1/crawl
-
-<br/>
-<br/>
-
-- #### _Optimization_
-
-  - [x] Concurrency
-  - [x] Pipelining
-
-<br/>
-
-- [x] API specification
-- [x] AWS deployment
-
-<br/>
-<br/>
-
-#### [LICENSE](https://github.com/joshua-dev/instacrawler/blob/master/LICENSE)
+```bash
+$ GOOS=linux GOARCH=amd64 go build -o instacrawler -v .
+```
 
