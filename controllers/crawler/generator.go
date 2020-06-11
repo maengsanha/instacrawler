@@ -15,22 +15,6 @@ const (
 	endpointPrefix string = "&max_id="
 )
 
-// Request is a crawling request body type.
-type Request struct {
-	HigherLayer      []string `json:"higher_layer"`
-	LowerLayer       []string `json:"lower_layer"`
-	HigherLayerCache []string `json:"higher_layer_cache"`
-	LowerLayerCache  []string `json:"lower_layer_cache"`
-}
-
-// Response is a crawling response body type.
-type Response struct {
-	HigherLayer      []instagram.Post `json:"higher_layer"`
-	LowerLayer       []instagram.Post `json:"lower_layer"`
-	HigherLayerCache []string         `json:"higher_layer_cache"`
-	LowerLayerCache  []string         `json:"lower_layer_cache"`
-}
-
 // Generator generates an Instagram crawler.
 func Generator(query, cache string) func() ([]instagram.Post, string, error) {
 	var hasNextPage bool = true

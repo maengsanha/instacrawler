@@ -13,8 +13,24 @@ const (
 	maxDeathCnt   int = 3
 )
 
-// Search implements meta-search with search terms of second layer and third layer.
-func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) crawler.Response {
+// Request is a meta-search request body type.
+type Request struct {
+	HigherLayer      []string `json:"higher_layer"`
+	LowerLayer       []string `json:"lower_layer"`
+	HigherLayerCache []string `json:"higher_layer_cache"`
+	LowerLayerCache  []string `json:"lower_layer_cache"`
+}
+
+// Response is a meta-search response body type.
+type Response struct {
+	HigherLayer      []instagram.Post `json:"higher_layer"`
+	LowerLayer       []instagram.Post `json:"lower_layer"`
+	HigherLayerCache []string         `json:"higher_layer_cache"`
+	LowerLayerCache  []string         `json:"lower_layer_cache"`
+}
+
+// Search implements meta-search with search terms of higher layer and lower layer.
+func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) Response {
 	queries := append(higherLayer, lowerLayer...)
 	caches := append(higherLayerCache, lowerLayerCache...)
 	workers := make([]func() ([]instagram.Post, string, error), len(queries))
@@ -60,7 +76,7 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 		for _, post := range crawlingResultMap {
 			crawlingResult = append(crawlingResult, post)
 		}
-		return crawler.Response{
+		return Response{
 			HigherLayer:      []instagram.Post{},
 			LowerLayer:       crawlingResult,
 			HigherLayerCache: endpoints[:len(higherLayerCache)],
@@ -94,7 +110,7 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 	}
 	syncer.Wait()
 
-	return crawler.Response{
+	return Response{
 		HigherLayer:      higherLayerResult,
 		LowerLayer:       lowerLayerResult,
 		HigherLayerCache: endpoints[:len(higherLayerCache)],

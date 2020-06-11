@@ -6,14 +6,14 @@
 
 본 문서는 API 정의와 명세를 포함하며, 개발 목적으로 활용함.
 
-<br />
+<br>
 
 **2. API 목록**
 
 - 1. /api/v1/topsearch
 - 2. /api/v1/crawl
 
-<br />
+<br>
 
 **3. API 명세서**
 
@@ -21,27 +21,27 @@
 
    Public DNS(IPv4): `http://ec2-13-125-96-172.ap-northeast-2.compute.amazonaws.com:3000`
 
-   <br />
+   <br>
 
 1. /api/v1/topsearch
 
-     <br />
+     <br>
 
   <img width="250" src="https://user-images.githubusercontent.com/62831866/78666393-44de1a00-7912-11ea-948b-fb77e5833ca8.jpeg">
 
 ​	위와 같이 인스타그램 상단 검색 시 출력되는 연관 해시태그 목록을 json 형태로 반환합니다.
 
-​	<br />
+​	<br>
 
 | method |       path        |     Request     |            Response            |
 | :----: | :---------------: | :-------------: | :----------------------------: |
 | `GET`  | /api/v1/topsearch | (string) 검색어 | (json) 상단 해시태그 검색 결과 |
 
-​	<br />
+​	<br>
 
 - Reponse Body 예시
 
-  <br />
+  <br>
 
   - name: 관련 해시태그
   - search_result_subtitle: 대략적인 게시물 갯수
@@ -84,10 +84,10 @@
 | :----: | :-----------: | :-------------------------------------: | :-------------------: |
 | `POST` | /api/v1/crawl | (json) 동의어를 포함한 메타 검색어 정보 | (json) 메타 검색 결과 |
 
-  <br />
+  <br>
 
 - Request Body 예시
-  <br />
+  <br>
 
   higher_layer: (array) 상위 카테고리의 검색어와 동의어를 모아놓은 container
 
@@ -117,10 +117,10 @@
   }
   ```
   
-  <br />
+  <br>
 
 * Response Body 예시
-  <br />
+  <br>
 
   higher_layer: (array) 상위 카테고리에만 속하는 검색 결과들의 container
 
@@ -130,7 +130,7 @@
 
   lower_layer_cache: (array) lower_layer의 각 검색어들의 다음 pagination 주소들을 모아놓은 container
 
-  <br />
+  <br>
 
   text: (string) 게시물의 텍스트
 
