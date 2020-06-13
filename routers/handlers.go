@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/joshua-dev/instacrawler/controllers/crawler"
 	"github.com/joshua-dev/instacrawler/controllers/meta"
 	"github.com/joshua-dev/instacrawler/controllers/top"
 )
@@ -24,7 +23,7 @@ func HandleTopSearch(c *gin.Context) {
 
 // HandleCrawl handles /api/v1/crawl
 func HandleCrawl(c *gin.Context) {
-	var req crawler.Request
+	var req meta.Request
 	c.BindJSON(&req)
 
 	if len(req.HigherLayer) == len(req.HigherLayerCache) && len(req.LowerLayer) == len(req.LowerLayerCache) {
