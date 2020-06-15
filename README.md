@@ -9,9 +9,9 @@
 
 <br>
 
-[**API Specification**](https://github.com/joshua-dev/instacrawler/blob/master/doc/spec.md)
+[**API Specification**](https://github.com/joshua-dev/instacrawler/blob/master/doc/api-spec.md)
 
-[**Instagram Crawling Solution**](https://github.com/joshua-dev/instacrawler/blob/master/doc/solution.md)
+[**Instagram Crawling Solution**](https://github.com/joshua-dev/instacrawler/blob/master/doc/instagram-crawling-solution.md)
 
 <br>
 
