@@ -24,5 +24,7 @@ func main() {
 
 	engine.POST(crawlPathPrefix, routers.HandleCrawl)
 
-	engine.Run(":3000")
+	if err := engine.Run(":3000"); err != nil {
+		panic(err)
+	}
 }

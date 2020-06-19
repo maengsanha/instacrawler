@@ -8,7 +8,7 @@ import (
 	"github.com/joshua-dev/instacrawler/controllers/top"
 )
 
-// HandleTopSearch handles /api/v1/topsearch
+// HandleTopSearch handles /api/v1/topsearch.
 func HandleTopSearch(c *gin.Context) {
 	query := c.Query("query")
 
@@ -21,12 +21,12 @@ func HandleTopSearch(c *gin.Context) {
 	c.JSON(http.StatusOK, hashtags)
 }
 
-// HandleCrawl handles /api/v1/crawl
+// HandleCrawl handles /api/v1/crawl.
 func HandleCrawl(c *gin.Context) {
 	var req meta.Request
-	c.BindJSON(&req)
-
-	if len(req.HigherLayer) == len(req.HigherLayerCache) && len(req.LowerLayer) == len(req.LowerLayerCache) {
+	if err := c.BindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, nil)
+	} else if len(req.HigherLayer) == len(req.HigherLayerCache) && len(req.LowerLayer) == len(req.LowerLayerCache) {
 		c.JSON(http.StatusOK, meta.Search(req.HigherLayer, req.LowerLayer, req.HigherLayerCache, req.LowerLayerCache))
 	} else {
 		c.JSON(http.StatusBadRequest, nil)

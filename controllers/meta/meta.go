@@ -9,8 +9,8 @@ import (
 )
 
 const (
-	maxSuccessCnt int = 3
-	maxDeathCnt   int = 3
+	MAX_SUCCESS_CNT int = 3
+	MAX_DEATH_CNT   int = 3
 )
 
 // Request is a meta-search request body type.
@@ -51,7 +51,7 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 				endpoint             string
 				crawlingResult       []instagram.Post
 			)
-			for successCnt < maxSuccessCnt && deathCnt < maxDeathCnt {
+			for successCnt < MAX_SUCCESS_CNT && deathCnt < MAX_DEATH_CNT {
 				posts, endCursor, err := f()
 				if err != nil {
 					deathCnt++
