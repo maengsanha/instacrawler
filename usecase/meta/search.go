@@ -1,19 +1,18 @@
-// Package meta implements Instagram meta-search engine logics.
 package meta
 
 import (
 	"sync"
 
-	"github.com/joshua-dev/instacrawler/controllers/crawler"
-	"github.com/joshua-dev/instacrawler/core/instagram"
+	"github.com/maengsanha/instacrawler/dataservice/instagram"
+	insta "github.com/maengsanha/instacrawler/model/instagram"
 )
 
 const (
-	MAX_SUCCESS_CNT int = 3
-	MAX_DEATH_CNT   int = 3
+	MAX_SUCCESS_CNT = 3
+	MAX_DEATH_CNT   = 3
 )
 
-// Request is a meta-search request body type.
+// Request represents the body of meta search request.
 type Request struct {
 	HigherLayer      []string `json:"higher_layer"`
 	LowerLayer       []string `json:"lower_layer"`
@@ -21,35 +20,35 @@ type Request struct {
 	LowerLayerCache  []string `json:"lower_layer_cache"`
 }
 
-// Response is a meta-search response body type.
+// Response represents the body of meta search response.
 type Response struct {
-	HigherLayer      []instagram.Post `json:"higher_layer"`
-	LowerLayer       []instagram.Post `json:"lower_layer"`
-	HigherLayerCache []string         `json:"higher_layer_cache"`
-	LowerLayerCache  []string         `json:"lower_layer_cache"`
+	HigherLayer      []insta.Post `json:"higher_layer"`
+	LowerLayer       []insta.Post `json:"lower_layer"`
+	HigherLayerCache []string     `json:"higher_layer_cache"`
+	LowerLayerCache  []string     `json:"lower_layer_cache"`
 }
 
 // Search implements meta-search with search terms of higher layer and lower layer.
 func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) Response {
 	queries := append(higherLayer, lowerLayer...)
 	caches := append(higherLayerCache, lowerLayerCache...)
-	workers := make([]func() ([]instagram.Post, string, error), len(queries))
-	crawlingResults := make([][]instagram.Post, len(queries))
+	workers := make([]func() ([]insta.Post, string, error), len(queries))
+	crawlingResults := make([][]insta.Post, len(queries))
 	endpoints := make([]string, len(caches))
 
 	for idx, query := range queries {
-		workers[idx] = crawler.Generator(query, caches[idx])
+		workers[idx] = instagram.PageParserGenerator(query, caches[idx])
 	}
 
 	var syncer sync.WaitGroup
 	for idx, worker := range workers {
 		syncer.Add(1)
-		go func(i int, f func() ([]instagram.Post, string, error)) {
+		go func(i int, f func() ([]insta.Post, string, error)) {
 			defer syncer.Done()
 			var (
 				successCnt, deathCnt int
 				endpoint             string
-				crawlingResult       []instagram.Post
+				crawlingResult       []insta.Post
 			)
 			for successCnt < MAX_SUCCESS_CNT && deathCnt < MAX_DEATH_CNT {
 				posts, endCursor, err := f()
@@ -71,13 +70,13 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 	if len(higherLayer) == 0 {
 		crawlingResultMap := _OR(crawlingResults)
 
-		var crawlingResult []instagram.Post
+		var crawlingResult []insta.Post
 
 		for _, post := range crawlingResultMap {
 			crawlingResult = append(crawlingResult, post)
 		}
 		return Response{
-			HigherLayer:      []instagram.Post{},
+			HigherLayer:      []insta.Post{},
 			LowerLayer:       crawlingResult,
 			HigherLayerCache: endpoints[:len(higherLayerCache)],
 			LowerLayerCache:  endpoints[len(higherLayerCache):],
@@ -86,11 +85,11 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 
 	higherLayerCrawlingResultMap, lowerLayerCrawlingResultMap := _OR(crawlingResults[:len(higherLayer)]), _OR(crawlingResults[len(higherLayer):])
 
-	higherLayerChannel, lowerLayerChannel := make(chan instagram.Post, len(higherLayerCrawlingResultMap)), make(chan instagram.Post, len(higherLayerCrawlingResultMap))
+	higherLayerChannel, lowerLayerChannel := make(chan insta.Post, len(higherLayerCrawlingResultMap)), make(chan insta.Post, len(higherLayerCrawlingResultMap))
 
 	_AND(higherLayerCrawlingResultMap, lowerLayerCrawlingResultMap, higherLayerChannel, lowerLayerChannel)
 
-	higherLayerResult, lowerLayerResult := make([]instagram.Post, len(higherLayerChannel)), make([]instagram.Post, len(lowerLayerChannel))
+	higherLayerResult, lowerLayerResult := make([]insta.Post, len(higherLayerChannel)), make([]insta.Post, len(lowerLayerChannel))
 
 	for idx := range higherLayerResult {
 		syncer.Add(1)
@@ -119,8 +118,8 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 }
 
 // _OR implements OR operation.
-func _OR(posts [][]instagram.Post) instagram.PostMap {
-	postMap := make(instagram.PostMap)
+func _OR(posts [][]insta.Post) insta.PostMap {
+	postMap := make(insta.PostMap)
 	for _, postArr := range posts {
 		for _, post := range postArr {
 			if _, exists := postMap[post.ID]; !exists {
@@ -132,7 +131,7 @@ func _OR(posts [][]instagram.Post) instagram.PostMap {
 }
 
 // _AND implements AND operation.
-func _AND(higherLayerPostMap, lowerLayerPostMap instagram.PostMap, higherLayerChannel, lowerLayerChannel chan instagram.Post) {
+func _AND(higherLayerPostMap, lowerLayerPostMap insta.PostMap, higherLayerChannel, lowerLayerChannel chan insta.Post) {
 	var syncer sync.WaitGroup
 
 	defer close(higherLayerChannel)
@@ -140,7 +139,7 @@ func _AND(higherLayerPostMap, lowerLayerPostMap instagram.PostMap, higherLayerCh
 
 	for id, post := range higherLayerPostMap {
 		syncer.Add(1)
-		go func(id string, post instagram.Post) {
+		go func(id string, post insta.Post) {
 			defer syncer.Done()
 			if _, exists := lowerLayerPostMap[id]; exists {
 				lowerLayerChannel <- post

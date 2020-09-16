@@ -1,30 +1,23 @@
-// Package main runs Instagram meta search API server.
 package main
 
 import (
 	"runtime"
 
+	"github.com/maengsanha/instacrawler/middleware/meta"
+
 	"github.com/gin-gonic/gin"
-	"github.com/joshua-dev/instacrawler/routers"
 )
 
-const (
-	topSearchPathPrefix string = "/api/v1/topsearch"
-	crawlPathPrefix     string = "/api/v1/crawl"
-)
+const metaPathPrefix = "/api/meta"
 
 func main() {
 	runtime.GOMAXPROCS(runtime.NumCPU())
-
 	gin.SetMode(gin.ReleaseMode)
 
 	engine := gin.Default()
+	api := engine.Group("/api")
 
-	engine.GET(topSearchPathPrefix, routers.HandleTopSearch)
+	api.POST(metaPathPrefix, meta.Search())
 
-	engine.POST(crawlPathPrefix, routers.HandleCrawl)
-
-	if err := engine.Run(":3000"); err != nil {
-		panic(err)
-	}
+	engine.Run(":3000")
 }

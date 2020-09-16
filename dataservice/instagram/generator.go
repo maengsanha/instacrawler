@@ -1,12 +1,11 @@
-// Package crawler implements Instagram crawling logic.
-package crawler
+package instagram
 
 import (
 	"encoding/json"
 	"fmt"
 	"net/http"
 
-	"github.com/joshua-dev/instacrawler/core/instagram"
+	"github.com/maengsanha/instacrawler/model/instagram"
 )
 
 const (
@@ -15,18 +14,22 @@ const (
 	endpointPrefix string = "&max_id="
 )
 
-// Generator generates an Instagram crawler.
-func Generator(query, cache string) func() ([]instagram.Post, string, error) {
-	var hasNextPage bool = true
-	var endCursor string = cache
+// PageParserGenerator generates an Instagram page source parser.
+func PageParserGenerator(query, cache string) func() ([]instagram.Post, string, error) {
+	var (
+		hasNextPage = true
+		endCursor   = cache
+	)
 
 	return func() ([]instagram.Post, string, error) {
 		if !hasNextPage {
-			return nil, endCursor, fmt.Errorf("Reached end of pagination")
+			return nil, endCursor, fmt.Errorf("reached end of pagination")
 		}
 
-		var tagPage instagram.TagPage
-		var requestURL string
+		var (
+			tagPage    instagram.TagPage
+			requestURL string
+		)
 
 		if endCursor == "" {
 			requestURL = fmt.Sprintf("%s%s%s", requestPrefix, query, requestSuffix)
@@ -39,7 +42,7 @@ func Generator(query, cache string) func() ([]instagram.Post, string, error) {
 			return nil, endCursor, err
 		}
 		if resp.StatusCode != http.StatusOK && resp.StatusCode != http.StatusTooManyRequests {
-			return nil, endCursor, fmt.Errorf("Request failed with status code %d", resp.StatusCode)
+			return nil, endCursor, fmt.Errorf("request failed with status code %d", resp.StatusCode)
 		}
 		defer resp.Body.Close()
 

@@ -1,12 +1,15 @@
-// Package crawler implements Instagram crawling logic.
-package crawler
+package instagram_test
 
-import "fmt"
+import (
+	"fmt"
 
-func ExampleGenerator() {
-	crawler := Generator("cafe", "")
+	"github.com/maengsanha/instacrawler/dataservice/instagram"
+)
+
+func Example_instagramPageParserGenerator() {
+	parser := instagram.PageParserGenerator("cafe", "")
 	for i := 0; i < 3; i++ {
-		posts, endCursor, err := crawler()
+		posts, endCursor, err := parser()
 		if err != nil {
 			fmt.Println(err)
 		}
