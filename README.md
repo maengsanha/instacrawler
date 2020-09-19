@@ -34,4 +34,4 @@ $ make build_raspberry
 :white_check_mark: **TODO**
 
 - [ ] Change deployment method to **Raspberry PI** & **Docker** using **CI/CD**
-- [ ] Refactor codes: Follow [Clean architecture in Golang](https://medium.com/@manakuro/clean-architecture-with-go-bce409427d31)
+- [x] Refactor codes: Follow [Clean architecture in Golang](https://medium.com/@manakuro/clean-architecture-with-go-bce409427d31)

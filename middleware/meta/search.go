@@ -3,14 +3,16 @@ package meta
 import (
 	"net/http"
 
-	"github.com/gin-gonic/gin"
+	metasearch "github.com/maengsanha/instacrawler/model/meta"
 	"github.com/maengsanha/instacrawler/usecase/meta"
+
+	"github.com/gin-gonic/gin"
 )
 
 // Search returns a handler for /api/meta.
 func Search() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var req meta.Request
+		var req metasearch.Request
 		if err := c.BindJSON(&req); err != nil {
 			c.JSON(http.StatusBadRequest, nil)
 		} else if len(req.HigherLayer) == len(req.HigherLayerCache) && len(req.LowerLayer) == len(req.LowerLayerCache) {

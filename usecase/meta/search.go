@@ -3,6 +3,8 @@ package meta
 import (
 	"sync"
 
+	"github.com/maengsanha/instacrawler/model/meta"
+
 	"github.com/maengsanha/instacrawler/dataservice/instagram"
 	insta "github.com/maengsanha/instacrawler/model/instagram"
 )
@@ -12,24 +14,8 @@ const (
 	MAX_DEATH_CNT   = 3
 )
 
-// Request represents the body of meta search request.
-type Request struct {
-	HigherLayer      []string `json:"higher_layer"`
-	LowerLayer       []string `json:"lower_layer"`
-	HigherLayerCache []string `json:"higher_layer_cache"`
-	LowerLayerCache  []string `json:"lower_layer_cache"`
-}
-
-// Response represents the body of meta search response.
-type Response struct {
-	HigherLayer      []insta.Post `json:"higher_layer"`
-	LowerLayer       []insta.Post `json:"lower_layer"`
-	HigherLayerCache []string     `json:"higher_layer_cache"`
-	LowerLayerCache  []string     `json:"lower_layer_cache"`
-}
-
 // Search implements meta-search with search terms of higher layer and lower layer.
-func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) Response {
+func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string) meta.Response {
 	queries := append(higherLayer, lowerLayer...)
 	caches := append(higherLayerCache, lowerLayerCache...)
 	workers := make([]func() ([]insta.Post, string, error), len(queries))
@@ -75,7 +61,7 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 		for _, post := range crawlingResultMap {
 			crawlingResult = append(crawlingResult, post)
 		}
-		return Response{
+		return meta.Response{
 			HigherLayer:      []insta.Post{},
 			LowerLayer:       crawlingResult,
 			HigherLayerCache: endpoints[:len(higherLayerCache)],
@@ -109,7 +95,7 @@ func Search(higherLayer, lowerLayer, higherLayerCache, lowerLayerCache []string)
 	}
 	syncer.Wait()
 
-	return Response{
+	return meta.Response{
 		HigherLayer:      higherLayerResult,
 		LowerLayer:       lowerLayerResult,
 		HigherLayerCache: endpoints[:len(higherLayerCache)],
