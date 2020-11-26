@@ -1,0 +1,14 @@
+apiVersion: autoscaler/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: instacrawler-hpa
+  labels:
+    app: instacrawler-hpa
+spec:
+  minReplicas: 1
+  maxReplicas: 10
+
+  scaleTargetRef:
+    apiVersion: deployment/v1
+    kind: Deployment
+    name: instacrawler-hpa
