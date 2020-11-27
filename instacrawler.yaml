@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: instacrawler
+  labels:
+    service-name: instacrawler
+spec:
+  containers:
+    - name: instacrawler
+      image: instacrawler
+      resources:
+        limits:
+          memory: "1024Mi"
+          cpu: "500m"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: instacrawler
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 3000
+      targetPort: 3000
+  selector:
+    service-name: instacrawler
