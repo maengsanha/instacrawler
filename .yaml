@@ -6,14 +6,11 @@ metadata:
     service-name: instacrawler
 spec:
   containers:
-    - name: instacrawler
-      image: instacrawler
-      resources:
-        limits:
-          memory: "1024Mi"
-          cpu: "500m"
+  - name: instacrawler
+    image: instacrawler
 
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -21,7 +18,7 @@ metadata:
 spec:
   type: LoadBalancer
   ports:
-    - port: 3000
-      targetPort: 3000
+  - port: 3000
+    targetPort: 3000
   selector:
     service-name: instacrawler

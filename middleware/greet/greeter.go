@@ -1,10 +1,16 @@
 package greet
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
+	"time"
+
+	"github.com/gin-gonic/gin"
+)
 
 func Greet() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		name := c.Query("name")
-		c.String(200, "Hello, %s!", name)
+		time.Sleep(10 * time.Second)
+		c.String(http.StatusOK, "Hello, %s!", name)
 	}
 }

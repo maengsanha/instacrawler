@@ -7,18 +7,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const metaPathPrefix = "/api/meta"
-
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 
 	engine := gin.Default()
-	api := engine.Group("/api")
-	{
-		api.POST(metaPathPrefix, meta.Search())
-	}
 
-	engine.GET("/", greet.Greet())
+	engine.POST("/api/meta", meta.Search())
+	engine.GET("/api/greet", greet.Greet())
 
 	engine.Run(":3000")
 }
