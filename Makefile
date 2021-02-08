@@ -1,11 +1,9 @@
 GOCMD = go
 GOBUILD = $(GOCMD) build
 GORUN = $(GOCMD) run
-GOCLEAN = $(GOCMD) clean
 GOTEST = $(GOCMD) test
-GOGET = $(GOCMD) get
+GOCLEAN = $(GOCMD) clean
 BINARY_FILE = instacrawler
-RM = rm -f
 
 all: run
 
@@ -26,4 +24,3 @@ run:
 
 clean:
 	@$(GOCLEAN)
-	@$(RM) $(BINARY_FILE)
