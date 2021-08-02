@@ -2,28 +2,12 @@
 
 #### INSTAGRAM CRAWLER
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/joshua-dev/instacrawler.svg)](https://pkg.go.dev/github.com/joshua-dev/instacrawler)
+[![Go Reference](https://pkg.go.dev/badge/github.com/maengsanha/instacrawler.svg)](https://pkg.go.dev/github.com/maengsanha/instacrawler)
 
 <br>
 
-**Installation**
+**Install**
 
 ```bash
-$ GO111MODULE=on go get github.com/maengsanha/instacrawler
-```
-
-<br>
-
-**Build (Linux)**
-
-```bash
-$ make build_linux
-```
-
-<br>
-
-**Build (Raspberry PI)**
-
-```bash
-$ make build_raspberry
+go get github.com/maengsanha/instacrawler
 ```
